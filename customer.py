@@ -1,17 +1,13 @@
 
 from tkinter import *
-from tkinter import font
-from typing import List
 from PIL import Image, ImageTk
 from tkinter import ttk
 from tkinter import messagebox
 import random
 import pyttsx3
 import re
-from pyttsx3 import engine
 from db_connector import DBConnection
 import requests
-import json
 
 
 class Customer:
@@ -344,7 +340,7 @@ class Customer:
 
         ############################## LEFT SIDE LOGO IMAGE #######################################
         hotel_logo = Image.open(
-            'E:\Python\python_tk_tuts\images\golden-hotel-logo-free-graphics-472233.jpg')
+            'D:\python_tkinter_project\images\golden-hotel-logo-free-graphics-472233.jpg')
         hotel_logo = hotel_logo.resize((60, 50), Image.ANTIALIAS)
         self.hotel_logo1 = ImageTk.PhotoImage(hotel_logo)
         hotel_logo1_label = Label(

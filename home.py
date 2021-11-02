@@ -26,7 +26,7 @@ class Home:
 
         ########################################### HOTEL LOGO #########################################################
         img_1 = Image.open(
-            'E:\Python\python_tk_tuts\images\golden-hotel-logo-free-graphics-472233.jpg')
+            'D:\python_tkinter_project\images\golden-hotel-logo-free-graphics-472233.jpg')
         img_1 = img_1.resize((250, 100), Image.ANTIALIAS)
         self.photo_img_1 = ImageTk.PhotoImage(img_1)
         image_lbl_1 = Label(
@@ -35,7 +35,7 @@ class Home:
         ########################################### HOTEL LOGO #########################################################
 
         img_2 = Image.open(
-            'E:\Python\python_tk_tuts\images\palace-hotels-india-hero.jpg')
+            'D:\python_tkinter_project\images\palace-hotels-india-hero.jpg')
         img_2 = img_2.resize((1100, 100), Image.ANTIALIAS)
         self.photo_img_2 = ImageTk.PhotoImage(img_2)
         image_lbl_2 = Label(
@@ -86,7 +86,7 @@ class Home:
 
         ##################################### FOOD IMAGE1 ###############################################
         food_img_1 = Image.open(
-            'E:\\Python\\python_tk_tuts\\images\\food_image_2.jpg')
+            'D:\\python_tkinter_project\\images\\food_image_2.jpg')
         food_img_1 = food_img_1.resize((188, 121), Image.ANTIALIAS)
         self.food_image_1 = ImageTk.PhotoImage(food_img_1)
         food_image_lbl_1 = Label(self.root, image=self.food_image_1)
@@ -94,7 +94,7 @@ class Home:
         ##################################### FOOD IMAGE2 ###############################################
 
         food_image_2 = Image.open(
-            'E:\\Python\python_tk_tuts\\images\\food_image.jpg')
+            'D:\\python_tkinter_project\\images\\food_image.jpg')
         food_image_2 = food_image_2.resize((186, 115), Image.ANTIALIAS)
         self.food_image_2 = ImageTk.PhotoImage(food_image_2)
         food_image_lbl_2 = Label(self.root, image=self.food_image_2)
