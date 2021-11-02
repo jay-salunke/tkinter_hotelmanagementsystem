@@ -8,8 +8,8 @@ import pyttsx3
 import re
 from db_connector import DBConnection
 import requests
-
-
+from dotenv import load_dotenv
+import os
 class Customer:
     # db_connector object
     db_con = DBConnection()
@@ -33,7 +33,7 @@ class Customer:
         url = "https://api.countrystatecity.in/v1/countries"
 
         headers = {
-                    'X-CSCAPI-KEY': 'Tmk5Y3ZJQ0RRM1dWUmZHUFlDbGU1Y0o1ZjlXRkcwendEUHlLT1VNcg=='
+                    'X-CSCAPI-KEY': os.getenv("API_KEY")
                     }
 
         response = requests.request("GET", url, headers=headers)
@@ -47,7 +47,7 @@ class Customer:
         url = "https://api.countrystatecity.in/v1/countries/"+dict_countries[self.nationality.get()]+"/states"
 
         headers = {
-                    'X-CSCAPI-KEY': 'Tmk5Y3ZJQ0RRM1dWUmZHUFlDbGU1Y0o1ZjlXRkcwendEUHlLT1VNcg=='
+                    'X-CSCAPI-KEY': os.getenv("API_KEY")
                     }
 
         response = requests.request("GET", url, headers=headers)
@@ -314,6 +314,7 @@ class Customer:
         return
 
     def __init__(self, root):
+        load_dotenv()
         self.root = root
         self.root.geometry('890x385+430+200')
         self.root.title('Customer details')
