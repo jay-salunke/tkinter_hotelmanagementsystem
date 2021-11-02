@@ -1,6 +1,12 @@
+from dotenv import load_dotenv
+import os
 import mysql.connector
 
 
 class DBConnection():
-    db = mysql.connector.connect(
-        host="localhost", user="root", password="Maiboli", database="hotelmanagementsystem")
+    
+
+    def __init__(self):
+        load_dotenv()
+        self.db = mysql.connector.connect(
+        host="localhost", user="root", password=os.getenv("DB_PASSWORD"), database="hotelmanagementsystem")
