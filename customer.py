@@ -59,6 +59,7 @@ class Customer:
 
     def form_validation(self):
         no_error = False
+        email_regex = r"[\w\.%+]+@[\w]+\.[\w]{2,3}$"
 
         if(self.name.get() == ""):
             self.engine.say("Name field is Empty")
@@ -77,6 +78,10 @@ class Customer:
             self.engine.runAndWait()
             messagebox.showerror(
                 "Error", "Email id is Empty", parent=self.root)
+        elif(not re.findall(email_regex,self.email_id.get())):
+            self.engine.say("Email field is invalid")
+            self.engine.runAndWait()
+            messagebox.showerror("Error","Email field is invalid",parent = self.root)        
 
         elif(self.mobile_no.get() == ""):
             self.engine.say("Mobile field is empty")
