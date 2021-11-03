@@ -42,7 +42,11 @@ class Room:
 
         name_entry = ttk.Entry(left_side_frame, font=(
             "new times roman", 9, "bold"),)
-        name_entry.place(x=5, y=20, width=160)
+        name_entry.place(x=5, y=20, width=120)
+        
+        #fetchbutton
+        fetch_button = Button(left_side_frame,font=("new times roman",9,"bold"),text="FETCH", fg="gold", bg="black", padx=5,pady=-130)
+        fetch_button.place(x=127,y=18)
         
         #check in date entry
         check_in_lbl = ttk.Label(left_side_frame, text='Check in date', font=(
