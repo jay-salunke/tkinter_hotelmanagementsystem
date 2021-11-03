@@ -100,16 +100,40 @@ class Room:
 
         total_cost_entry = ttk.Entry(left_side_frame,font=("new times roman",9,"bold"),width=160,state="readonly")
         total_cost_entry.place(x=190, y=195, width=160)
-
-
-
-
-        
-
            
+        ############################################################################################################
 
-        ############################################################################################
+         ###################################### LEFT SIDE FRAME BUTTONS ############################################
 
+        # bottom frame
+        bottom_frame = ttk.Frame(left_side_frame, relief=RIDGE)
+        bottom_frame.place(x=2, y=225, width=380, height=78)
+
+        # add button
+        add_btn = Button(bottom_frame,text="ADD", fg="gold", bg="black", font=(
+            "new times roman", 12, "bold"), padx=15, pady=2)
+        add_btn.grid(row=0, column=0)
+
+        # update button
+        update_btn = Button(bottom_frame, text="UPDATE", fg="gold", bg="black", font=(
+            "new times roman", 12, "bold"), padx=15, pady=2,)
+        update_btn.grid(row=0, column=1, padx=1)
+
+        # delete button
+        delete_btn = Button(bottom_frame, text="DELETE", fg="gold", bg="black", font=(
+            "new times roman", 12, "bold"), padx=15, pady=2,)
+        delete_btn.grid(row=0, column=2, padx=1)
+
+        # clear button
+        clear_btn = Button(bottom_frame, text="CLEAR", fg="gold", bg="black", font=(
+            "new times roman", 12, "bold"), padx=5, pady=2,)
+        clear_btn.grid(row=0, column=3, padx=1, pady=3)
+
+        bill_btn = Button(bottom_frame,text="BILL",fg="gold", bg="black", font=(
+            "new times roman", 12, "bold"), padx=15, pady=2)
+        bill_btn.grid(row=1, column=0, padx=2)
+
+        ####################################################################################################
 
 if __name__ == '__main__':
     room_win_root = Tk()
