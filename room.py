@@ -165,6 +165,49 @@ class Room:
             "new times roman", 9, "bold"), fg="gold", bg="black")
         show_all_btn.grid(row=0, column=4, padx=3)
 
+        table_frame = Frame(right_side_frame, border=2)
+        table_frame.place(x=0, y=40, width=500, height=270)
+
+        #######################################TABLE #########################################
+        # X-axis and Y-axis ScrollBar
+        scroll_x = Scrollbar(table_frame, orient=HORIZONTAL)
+        scroll_y = Scrollbar(table_frame, orient=VERTICAL)
+
+        self.room_table = ttk.Treeview(table_frame, columns=(
+            "Contact no", "Check in date", "Check out date", "Room type", "Room available", "Meal", "No of days", "Total cost"), xscrollcommand=scroll_x, yscrollcommand=scroll_y)
+
+        scroll_y.pack(side=RIGHT, fill=Y)
+        scroll_x.pack(side=BOTTOM, fill=X)
+
+        scroll_x.config(command=self.room_table.xview)
+        scroll_y.config(command=self.room_table.yview)
+
+        # table heading
+        self.room_table.heading("Contact no", text="Contact")
+        self.room_table.heading("Check in date", text="Checkin")
+        self.room_table.heading("Check out date", text="Checkout")
+        self.room_table.heading("Room type", text="Roomtype")
+        self.room_table.heading("Room available", text="RoomAvailable")
+        self.room_table.heading("Meal", text="Meal")
+        self.room_table.heading("No of days", text="No_of_Days")
+        self.room_table.heading("Total cost", text="Total cost")
+        self.room_table["show"] = "headings"
+
+        # setting column width
+        self.room_table.column("Contact no", width=100)
+        self.room_table.column("Check in date", width=100)
+        self.room_table.column("Check out date", width=100)
+        self.room_table.column("Room type", width=100)
+        self.room_table.column("Room available", width=100)
+        self.room_table.column("Meal", width=100)
+        self.room_table.column("No of days", width=100)
+        self.room_table.column("Total cost", width=100)
+        # self.customer_details_table.bind(
+        #     "<ButtonRelease-1>", self.get_row_details)
+
+        # filling content in frame from both side (i.e from x-axis and y-axis both)
+        self.room_table.pack(fill=BOTH, expand=1)
+
 if __name__ == '__main__':
     room_win_root = Tk()
     cusomer_obj = Room(room_win_root)
