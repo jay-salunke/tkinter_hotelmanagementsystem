@@ -67,9 +67,9 @@ class Home:
         customer_btn.grid(row=0, column=0)
 
         # room button
-        customer_btn = Button(button_frame, width=15, bg='black', text="ROOM", fg='gold', padx=15, pady=4, font=(
+        room_booking_btn = Button(button_frame, width=15, bg='black', text="ROOM", fg='gold', padx=15, pady=4, font=(
             'new times roman', 12, 'bold'), cursor='hand1', command=self.room_windows)
-        customer_btn.grid(row=1, column=0)
+        room_booking_btn.grid(row=1, column=0)
 
         # details button
         details_btn = Button(button_frame, width=15, bg='black', text="DETAILS", fg='gold',
