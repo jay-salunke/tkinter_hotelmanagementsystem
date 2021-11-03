@@ -94,7 +94,7 @@ class Room:
         total_cost_lbl = ttk.Label(left_side_frame,text="total cost",font=("new times roman",9,"bold"))
         total_cost_lbl.place(x=190, y=175)
 
-        total_cost_entry = ttk.Entry(left_side_frame,font=("new times roman",9,"bold"),width=160)
+        total_cost_entry = ttk.Entry(left_side_frame,font=("new times roman",9,"bold"),width=160,state="readonly")
         total_cost_entry.place(x=190, y=195, width=160)
 
 
