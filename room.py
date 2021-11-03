@@ -134,6 +134,37 @@ class Room:
         bill_btn.grid(row=1, column=0, padx=2)
 
         ####################################################################################################
+         ##################################### RIGHT SIDE FRAME ############################################
+        self.search_type = StringVar()
+        # frame
+        right_side_frame = LabelFrame(
+            self.root, text='VIEW DETAILS', relief=RIDGE, font=("new times roman", 11, "bold"))
+        right_side_frame.place(x=390, y=54, width=500, height=330)
+
+        # search combo box
+        search = ("--select search type", "Mobile no", "Name",
+                  "Customer Id", "Nationality", "State")
+        combo_search = ttk.Combobox(
+            right_side_frame, font=("new times roman", 9, "bold"))
+        combo_search['values'] = search
+        combo_search.current(0)
+        combo_search.grid(row=0, column=1, padx=3)
+
+        # search entry
+        self.entry_text = StringVar()
+        search_entry = Entry(right_side_frame, font=(
+            "new times roman", 9, "bold"))
+        search_entry.grid(row=0, column=2, padx=3)
+
+        # show button
+        show_btn = Button(right_side_frame, text="SHOW", font=(
+            "new times roman", 9, "bold"), fg="gold", bg="black")
+        show_btn.grid(row=0, column=3, padx=3)
+
+        # show all button
+        show_all_btn = Button(right_side_frame, text="SHOW ALL", font=(
+            "new times roman", 9, "bold"), fg="gold", bg="black")
+        show_all_btn.grid(row=0, column=4, padx=3)
 
 if __name__ == '__main__':
     room_win_root = Tk()
