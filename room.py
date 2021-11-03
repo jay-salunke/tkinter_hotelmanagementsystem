@@ -68,6 +68,38 @@ class Room:
         room_type_combo_box= ttk.Combobox(
             left_side_frame, font=("new times roman", 9, "bold"), width=160)
         room_type_combo_box.place(x=190,y=78,width=160)
+
+        #available room no entry
+        available_room_no_lbl = ttk.Label(left_side_frame,text = "Available room no",font=("new times roman",9,"bold"))
+        available_room_no_lbl.place(x=2, y=116)
+
+        available_room_no_entry = ttk.Entry(left_side_frame,state="readonly",font=("new times roman",9,"bold"))
+        available_room_no_entry.place(x=5, y=135, width=160)
+
+        #meal combo box
+        meal_lbl = ttk.Label(left_side_frame,text="Meal",font=("new times roman",9,"bold"))
+        meal_lbl.place(x=190, y=116)
+        
+        meal_combo_box = ttk.Combobox(left_side_frame,font=("new times roman",9,"bold"))
+        meal_combo_box.place(x=190, y=135, width=160)
+
+        #no of days entry
+        no_of_days_lbl = ttk.Label(left_side_frame, text ="no of days",font=("new times roman",9,"bold"))
+        no_of_days_lbl.place(x=2, y=175)
+       
+        no_of_days_entry = ttk.Entry(left_side_frame,font=("new times roman",9,"bold"))
+        no_of_days_entry.place(x=5, y=195,width=160)
+
+        #paid tax entry
+        total_cost_lbl = ttk.Label(left_side_frame,text="total cost",font=("new times roman",9,"bold"))
+        total_cost_lbl.place(x=190, y=175)
+
+        total_cost_entry = ttk.Entry(left_side_frame,font=("new times roman",9,"bold"),width=160)
+        total_cost_entry.place(x=190, y=195, width=160)
+
+
+
+
         
 
            
