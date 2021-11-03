@@ -142,8 +142,7 @@ class Room:
         right_side_frame.place(x=390, y=54, width=500, height=330)
 
         # search combo box
-        search = ("--select search type", "Mobile no", "Name",
-                  "Customer Id", "Nationality", "State")
+        search = ("--select search type", "Contact no","Room no")
         combo_search = ttk.Combobox(
             right_side_frame, font=("new times roman", 9, "bold"))
         combo_search['values'] = search
