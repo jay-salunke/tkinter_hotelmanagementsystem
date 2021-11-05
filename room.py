@@ -77,23 +77,30 @@ class Room:
             messagebox.showerror("Error","check in date is empty")
         
         elif checkin_date[0]>12 or  checkout_date[0]>12:
-            self.engine.say("please give valid month") 
+            self.engine.say("please enter valid month") 
             self.engine.runAndWait()
-            messagebox.showerror("Error","Please give the valid month")
+            messagebox.showerror("Error","Please enter the valid month")
         
         elif checkin_date[1]>31 or checkout_date[1]>31:
             self.engine.say("please enter valid date")
             self.engine.runAndWait()
-            messagebox.showerror("Error","Please give the valid date")
+            messagebox.showerror("Error","Please enter the valid date")
         
         elif checkin_date[2]>checkout_date[2]:
-            self.engine.say("you have entered wrong check in date")
+            self.engine.say("check in year is bigger. please enter valid year")
             self.engine.runAndWait()
-            messagebox.showerror("Error","Please enter valid checkout date")
+            messagebox.showerror("Error","check in year is bigger. please enter valid year")
 
         elif checkout_date[2]<checkin_date[2]:
             self.engine.say("you have entered wrong check out date")
             self.engine.runAndWait()
+        
+        elif checkin_date[0]>checkout_date[0]:
+            self.engine.say("check in date month is bigger. please enter valid month")
+            self.engine.runAndWait()
+            messagebox.showerror("Error","check in date month is bigger. please enter valid month")
+        
+        
           
 
         else:
