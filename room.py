@@ -3,9 +3,39 @@ from tkinter import ttk
 from tkinter import font
 from PIL import Image, ImageTk
 from tkcalendar import DateEntry
+from tkinter import messagebox
+from db_connector import DBConnection
 
 
 class Room:
+    db_con = DBConnection()
+
+    def fetch_data(self):
+        if self.contact_num.get() == "":
+            messagebox.showerror(
+                "error", "Please enter phone number", parent=self.root)
+        else:
+
+            try:
+                db_cursor = self.db_con.db.cursor()
+                query = (
+                    "select * from customers_details where customer_mobile_no = %s")
+                value = (self.contact_num.get(),)
+                db_cursor.execute(query, value)
+                row = db_cursor.fetchall()
+
+                if row == None:
+                    messagebox.showerror(
+                        "Error", "This number is not found", parent=self.root)
+                else:
+                    self.db_con.db.commit()
+                    messagebox.showinfo("Success",
+                                        f"Data found!\n Customer id: {row[0][0]} \n Customer name: {row[0][1]} \n Customer email: {row[0][2]} \n Customer mobile: {row[0][3]} \n Customer nation: {row[0][4]} \n Customer state: {row[0][5]}\n Customer gender: {row[0][6]}\n Customer proof type: {row[0][7]}", parent=self.root)
+
+            except Exception as e:
+                messagebox.showwarning("Warning", f"{str(e)}")
+
+        return
 
     def __init__(self, root):
         self.root = root
@@ -20,7 +50,7 @@ class Room:
         self.available_room = StringVar()
         self.meal = StringVar()
         self.no_of_days = StringVar()
-        self.total_cost= StringVar()
+        self.total_cost = StringVar()
         ############################################################################################
 
         ################################### CUSTOMER DETAIL TITLE###################################
@@ -38,12 +68,12 @@ class Room:
             self.root, image=self.hotel_logo1, relief=RIDGE)
         hotel_logo1_label.place(x=0, y=0)
         ############################################################################################
-        
+
         ######################################LEFT SIDE FRAME #######################################
         left_side_frame = LabelFrame(
             self.root, text='ADD ROOM BOOKING DETAILS', relief=RIDGE, font=("new times roman", 11, "bold"))
         left_side_frame.place(x=2, y=54, width=385, height=330)
-        
+
         ##################################### ADD DETAIL ENTRIES ####################################
 
         # customer name
@@ -52,76 +82,87 @@ class Room:
         name_lbl.place(x=2, y=2)
 
         name_entry = ttk.Entry(left_side_frame, font=(
-            "new times roman", 9, "bold"),textvariable=self.contact_num)
+            "new times roman", 9, "bold"), textvariable=self.contact_num)
         name_entry.place(x=5, y=20, width=120)
-        
-        #fetchbutton
-        fetch_button = Button(left_side_frame,font=("new times roman",9,"bold"),text="FETCH", fg="gold", bg="black", padx=5,pady=-130)
-        fetch_button.place(x=127,y=18)
-        
-        #check in date entry
+
+        # fetchbutton
+        fetch_button = Button(left_side_frame, font=("new times roman", 9, "bold"),
+                              text="FETCH", command=self.fetch_data, fg="gold", bg="black", padx=5, pady=-130)
+        fetch_button.place(x=127, y=18)
+
+        # check in date entry
         check_in_lbl = ttk.Label(left_side_frame, text='Check in date', font=(
             "new times roman", 9, "bold"))
         check_in_lbl.place(x=190, y=2)
 
         check_in_date_entry = DateEntry(
-            left_side_frame, font=("new times roman", 9, "bold"),selectmode = 'day',textvariable = self.checkin_date)
+            left_side_frame, font=("new times roman", 9, "bold"), selectmode='day', textvariable=self.checkin_date)
         check_in_date_entry.place(x=190, y=20, width=160)
 
-        #check out date entry
-        check_out_lbl = ttk.Label(left_side_frame,text="Check out date",font=("new times roman",9,"bold"))
+        # check out date entry
+        check_out_lbl = ttk.Label(
+            left_side_frame, text="Check out date", font=("new times roman", 9, "bold"))
         check_out_lbl.place(x=2, y=60)
 
-        check_out_date_entry = DateEntry(left_side_frame,selectmode = 'day',font=("new times roman",9,"bold"),textvariable = self.checkout_date)
+        check_out_date_entry = DateEntry(left_side_frame, selectmode='day', font=(
+            "new times roman", 9, "bold"), textvariable=self.checkout_date)
         check_out_date_entry .place(x=5, y=78, width=160)
 
-        #room type combobox
-        room_type_lbl= ttk.Label(
+        # room type combobox
+        room_type_lbl = ttk.Label(
             left_side_frame, text="Room type", font=("new times roman", 9, "bold"))
         room_type_lbl.place(x=190, y=60)
 
-        room_type_combo_box= ttk.Combobox(
-            left_side_frame, font=("new times roman", 9, "bold"), width=160,textvariable=self.room_type)
-        room_type_combo_box.place(x=190,y=78,width=160)
+        room_type_combo_box = ttk.Combobox(
+            left_side_frame, font=("new times roman", 9, "bold"), width=160, textvariable=self.room_type)
+        room_type_combo_box.place(x=190, y=78, width=160)
 
-        #available room no entry
-        available_room_no_lbl = ttk.Label(left_side_frame,text = "Available room no",font=("new times roman",9,"bold"))
+        # available room no entry
+        available_room_no_lbl = ttk.Label(
+            left_side_frame, text="Available room no", font=("new times roman", 9, "bold"))
         available_room_no_lbl.place(x=2, y=116)
 
-        available_room_no_entry = ttk.Entry(left_side_frame,state="readonly",font=("new times roman",9,"bold"),textvariable=self.available_room)
+        available_room_no_entry = ttk.Entry(left_side_frame, state="readonly", font=(
+            "new times roman", 9, "bold"), textvariable=self.available_room)
         available_room_no_entry.place(x=5, y=135, width=160)
 
-        #meal combo box
-        meal_lbl = ttk.Label(left_side_frame,text="Meal",font=("new times roman",9,"bold"))
+        # meal combo box
+        meal_lbl = ttk.Label(left_side_frame, text="Meal",
+                             font=("new times roman", 9, "bold"))
         meal_lbl.place(x=190, y=116)
-        
-        meal_combo_box = ttk.Combobox(left_side_frame,font=("new times roman",9,"bold"),textvariable=self.meal)
+
+        meal_combo_box = ttk.Combobox(left_side_frame, font=(
+            "new times roman", 9, "bold"), textvariable=self.meal)
         meal_combo_box.place(x=190, y=135, width=160)
 
-        #no of days entry
-        no_of_days_lbl = ttk.Label(left_side_frame, text ="No of days",font=("new times roman",9,"bold"))
+        # no of days entry
+        no_of_days_lbl = ttk.Label(
+            left_side_frame, text="No of days", font=("new times roman", 9, "bold"))
         no_of_days_lbl.place(x=2, y=175)
-       
-        no_of_days_entry = ttk.Entry(left_side_frame,font=("new times roman",9,"bold"),textvariable=self.no_of_days)
-        no_of_days_entry.place(x=5, y=195,width=160)
 
-        #paid tax entry
-        total_cost_lbl = ttk.Label(left_side_frame,text="Total cost",font=("new times roman",9,"bold"))
+        no_of_days_entry = ttk.Entry(left_side_frame, font=(
+            "new times roman", 9, "bold"), textvariable=self.no_of_days)
+        no_of_days_entry.place(x=5, y=195, width=160)
+
+        # paid tax entry
+        total_cost_lbl = ttk.Label(
+            left_side_frame, text="Total cost", font=("new times roman", 9, "bold"))
         total_cost_lbl.place(x=190, y=175)
 
-        total_cost_entry = ttk.Entry(left_side_frame,font=("new times roman",9,"bold"),width=160,state="readonly",textvariable=self.total_cost)
+        total_cost_entry = ttk.Entry(left_side_frame, font=(
+            "new times roman", 9, "bold"), width=160, state="readonly", textvariable=self.total_cost)
         total_cost_entry.place(x=190, y=195, width=160)
-           
+
         ############################################################################################################
 
-         ###################################### LEFT SIDE FRAME BUTTONS ############################################
+        ###################################### LEFT SIDE FRAME BUTTONS ############################################
 
         # bottom frame
         bottom_frame = ttk.Frame(left_side_frame, relief=RIDGE)
         bottom_frame.place(x=2, y=225, width=380, height=78)
 
         # add button
-        add_btn = Button(bottom_frame,text="ADD", fg="gold", bg="black", font=(
+        add_btn = Button(bottom_frame, text="ADD", fg="gold", bg="black", font=(
             "new times roman", 12, "bold"), padx=15, pady=2)
         add_btn.grid(row=0, column=0)
 
@@ -140,13 +181,13 @@ class Room:
             "new times roman", 12, "bold"), padx=5, pady=2,)
         clear_btn.grid(row=0, column=3, padx=1, pady=3)
 
-        bill_btn = Button(bottom_frame,text="BILL",fg="gold", bg="black", font=(
+        bill_btn = Button(bottom_frame, text="BILL", fg="gold", bg="black", font=(
             "new times roman", 12, "bold"), padx=15, pady=2)
         bill_btn.grid(row=1, column=0, padx=2)
 
         ####################################################################################################
 
-         ##################################### RIGHT SIDE FRAME ############################################
+        ##################################### RIGHT SIDE FRAME ############################################
         self.search_type = StringVar()
         # frame
         right_side_frame = LabelFrame(
@@ -154,7 +195,7 @@ class Room:
         right_side_frame.place(x=390, y=54, width=500, height=330)
 
         # search combo box
-        search = ("--select search type", "Contact no","Room no")
+        search = ("--select search type", "Contact no", "Room no")
         combo_search = ttk.Combobox(
             right_side_frame, font=("new times roman", 9, "bold"))
         combo_search['values'] = search
@@ -219,6 +260,7 @@ class Room:
 
         # filling content in frame from both side (i.e from x-axis and y-axis both)
         self.room_table.pack(fill=BOTH, expand=1)
+
 
 if __name__ == '__main__':
     room_win_root = Tk()
