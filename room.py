@@ -116,6 +116,30 @@ class Room:
                 self.engine.runAndWait()
                 messagebox.showerror(
                     "Error", "check in date is bigger.enter valid date")
+            elif self.room_type.get() == "":
+                self.engine.say("please select room type")
+                self.engine.runAndWait()
+                messagebox.showerror("Error","please select room type")
+            
+            elif self.available_room.get() == "":
+                self.engine.say("please enter room number")
+                self.engine.runAndWait()
+                messagebox.showerror("Error","please enter room no")
+            
+            elif self.meal.get() == "":
+                self.engine.say("please select meal field")
+                self.engine.runAndWait()
+                messagebox.showerror("Error","please select meal field")
+             
+            elif self.no_of_days.get() == "":
+                 self.engine.say("no of days field is empty")
+                 self.engine.runAndWait()
+                 messagebox.showerror("Error","no of days field is empty")
+            
+            elif self.total_cost.get() == "":
+                self.engine.say("Total cost field is empty")
+                self.engine.runAndWait()          
+                messagebox.showerror("Error","Total cost field is empty")           
 
             else:
                 no_error = True
@@ -217,7 +241,7 @@ class Room:
             left_side_frame, text="Available room no", font=("new times roman", 9, "bold"))
         available_room_no_lbl.place(x=2, y=116)
 
-        available_room_no_entry = ttk.Entry(left_side_frame, state="readonly", font=(
+        available_room_no_entry = ttk.Entry(left_side_frame, font=(
             "new times roman", 9, "bold"), textvariable=self.available_room)
         available_room_no_entry.place(x=5, y=135, width=160)
 
