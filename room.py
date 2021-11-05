@@ -1,3 +1,4 @@
+import re
 from tkinter import *
 from tkinter import ttk
 from tkinter import font
@@ -5,10 +6,22 @@ from PIL import Image, ImageTk
 from tkcalendar import DateEntry
 from tkinter import messagebox
 from db_connector import DBConnection
+import pyttsx3
 
 
 class Room:
     db_con = DBConnection()
+
+    engine = pyttsx3.init()
+
+    ################# VOICE #####################
+    # getting details of current voice
+    voices = engine.getProperty('voices')
+
+    # engine.setProperty('voice', voices[0].id)
+    # changing index, changes voices. o for male
+
+    engine.setProperty('voice', voices[1].id)
 
     def fetch_data(self):
         if self.contact_num.get() == "":
@@ -37,7 +50,65 @@ class Room:
 
         return
 
+    def form_validation(self):
+        checkin_date = [int(x) for x in self.checkin_date.get().split('/')]
+        checkout_date = [int(x) for x in self.checkout_date.get().split('/')]
+        
+        no_error = False
+        if self.contact_num.get() == "":
+         self.engine.say("mobile field is empty")
+         self.engine.runAndWait()
+         messagebox.showerror("Error","mobile field is empty")
+
+        elif(not re.match('^[\\d]+$', self.contact_num.get())):
+            self.engine.say('characters are not allowed')
+            self.engine.runAndWait()
+            messagebox.showerror(
+                "Error", "Characters are not allowed", parent=self.root)
+
+        elif(len(self.contact_num.get()) > 10 or len(self.contact_num.get()) <= 9):
+            self.engine.say('Enter 10 digits number only')
+            self.engine.runAndWait()
+            messagebox.showerror("Error", "Enter the 10 digits number only")
+        
+        elif self.checkin_date.get() == "":
+            self.engine.say("please fill checkin date")
+            self.engine.runAndWait()
+            messagebox.showerror("Error","check in date is empty")
+        
+        elif checkin_date[0]>12 or  checkout_date[0]>12:
+            self.engine.say("please give valid month") 
+            self.engine.runAndWait()
+            messagebox.showerror("Error","Please give the valid month")
+        
+        elif checkin_date[1]>31 or checkout_date[1]>31:
+            self.engine.say("please enter valid date")
+            self.engine.runAndWait()
+            messagebox.showerror("Error","Please give the valid date")
+        
+        elif checkin_date[2]>checkout_date[2]:
+            self.engine.say("you have entered wrong check in date")
+            self.engine.runAndWait()
+            messagebox.showerror("Error","Please enter valid checkout date")
+
+        elif checkout_date[2]<checkin_date[2]:
+            self.engine.say("you have entered wrong check out date")
+            self.engine.runAndWait()
+          
+
+        else:
+            no_error = True
+        
+        return no_error
+
+    def add_data(self):
+        if(self.form_validation()):
+            print("Success")
+        return
+
+
     def __init__(self, root):
+
         self.root = root
         self.root.geometry('890x385+430+200')
         self.root.title('Room booking')
@@ -163,7 +234,7 @@ class Room:
 
         # add button
         add_btn = Button(bottom_frame, text="ADD", fg="gold", bg="black", font=(
-            "new times roman", 12, "bold"), padx=15, pady=2)
+            "new times roman", 12, "bold"), padx=15, pady=2,command=self.add_data)
         add_btn.grid(row=0, column=0)
 
         # update button
