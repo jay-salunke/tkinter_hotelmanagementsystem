@@ -54,72 +54,75 @@ class Room:
     def form_validation(self):
         no_error = False
         try:
-         checkin_date = [int(x) for x in self.checkin_date.get().split('/')]
-         checkout_date = [int(x) for x in self.checkout_date.get().split('/')]
+            checkin_date = [int(x) for x in self.checkin_date.get().split('/')]
+            checkout_date = [int(x)
+                             for x in self.checkout_date.get().split('/')]
 
-         date1 = date(checkin_date[2], checkin_date[0], checkin_date[1])
-         date2 = date(checkout_date[2], checkout_date[0], checkout_date[1])
+            date1 = date(checkin_date[2], checkin_date[0], checkin_date[1])
+            date2 = date(checkout_date[2], checkout_date[0], checkout_date[1])
 
+            if self.contact_num.get() == "":
+                self.engine.say("mobile field is empty")
+                self.engine.runAndWait()
+                messagebox.showerror("Error", "mobile field is empty")
 
-         if self.contact_num.get() == "":
-             self.engine.say("mobile field is empty")
-             self.engine.runAndWait()
-             messagebox.showerror("Error", "mobile field is empty")
+            elif(not re.match('^[\\d]+$', self.contact_num.get())):
+                self.engine.say('characters are not allowed')
+                self.engine.runAndWait()
+                messagebox.showerror(
+                    "Error", "Characters are not allowed", parent=self.root)
 
-         elif(not re.match('^[\\d]+$', self.contact_num.get())):
-             self.engine.say('characters are not allowed')
-             self.engine.runAndWait()
-             messagebox.showerror(
-                 "Error", "Characters are not allowed", parent=self.root)
+            elif(len(self.contact_num.get()) > 10 or len(self.contact_num.get()) <= 9):
+                self.engine.say('Enter 10 digits number only')
+                self.engine.runAndWait()
+                messagebox.showerror(
+                    "Error", "Enter the 10 digits number only")
 
-         elif(len(self.contact_num.get()) > 10 or len(self.contact_num.get()) <= 9):
-             self.engine.say('Enter 10 digits number only')
-             self.engine.runAndWait()
-             messagebox.showerror("Error", "Enter the 10 digits number only")
+            elif self.checkin_date.get() == "":
+                self.engine.say("please fill checkin date")
+                self.engine.runAndWait()
+                messagebox.showerror("Error", "check in date is empty")
 
-         elif self.checkin_date.get() == "":
-             self.engine.say("please fill checkin date")
-             self.engine.runAndWait()
-             messagebox.showerror("Error", "check in date is empty")
+            elif checkin_date[0] > 12 or checkout_date[0] > 12:
+                self.engine.say("please enter valid month")
+                self.engine.runAndWait()
+                messagebox.showerror("Error", "Please enter the valid month")
 
-         elif checkin_date[0] > 12 or checkout_date[0] > 12:
-             self.engine.say("please enter valid month")
-             self.engine.runAndWait()
-             messagebox.showerror("Error", "Please enter the valid month")
+            elif checkin_date[1] > 31 or checkout_date[1] > 31:
+                self.engine.say("please enter valid date")
+                self.engine.runAndWait()
+                messagebox.showerror("Error", "Please enter the valid date")
 
-         elif checkin_date[1] > 31 or checkout_date[1] > 31:
-             self.engine.say("please enter valid date")
-             self.engine.runAndWait()
-             messagebox.showerror("Error", "Please enter the valid date")
+            elif checkin_date[2] > checkout_date[2]:
+                self.engine.say(
+                    "check in year is bigger. please enter valid year")
+                self.engine.runAndWait()
+                messagebox.showerror(
+                    "Error", "check in year is bigger. please enter valid year")
 
-         elif checkin_date[2] > checkout_date[2]:
-             self.engine.say("check in year is bigger. please enter valid year")
-             self.engine.runAndWait()
-             messagebox.showerror(
-                "Error", "check in year is bigger. please enter valid year")
+            elif checkout_date[2] < checkin_date[2]:
+                self.engine.say("you have entered wrong check out date")
+                self.engine.runAndWait()
 
-         elif checkout_date[2] < checkin_date[2]:
-             self.engine.say("you have entered wrong check out date")
-             self.engine.runAndWait()
+            elif checkin_date[0] > checkout_date[0]:
+                self.engine.say(
+                    "check in date month is bigger. please enter valid month")
+                self.engine.runAndWait()
+                messagebox.showerror(
+                    "Error", "check in date month is bigger. please enter valid month")
 
-         elif checkin_date[0] > checkout_date[0]:
-             self.engine.say(
-                 "check in date month is bigger. please enter valid month")
-             self.engine.runAndWait()
-             messagebox.showerror(
-                 "Error", "check in date month is bigger. please enter valid month")
-        
-         elif date1>date2:
-             self.engine.say("check in date is bigger.enter valid date")
-             self.engine.runAndWait()
-             messagebox.showerror("Error","check in date is bigger.enter valid date")        
+            elif date1 > date2:
+                self.engine.say("check in date is bigger.enter valid date")
+                self.engine.runAndWait()
+                messagebox.showerror(
+                    "Error", "check in date is bigger.enter valid date")
 
-         else:
-             no_error = True
+            else:
+                no_error = True
         except Exception as e:
             self.engine.say(str(e))
             self.engine.runAndWait()
-            messagebox.showerror("Error",f"{str(e)}")
+            messagebox.showerror("Error", f"{str(e)}")
 
         return no_error
 
