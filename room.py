@@ -119,27 +119,27 @@ class Room:
             elif self.room_type.get() == "":
                 self.engine.say("please select room type")
                 self.engine.runAndWait()
-                messagebox.showerror("Error","please select room type")
-            
+                messagebox.showerror("Error", "please select room type")
+
             elif self.available_room.get() == "":
                 self.engine.say("please enter room number")
                 self.engine.runAndWait()
-                messagebox.showerror("Error","please enter room no")
-            
+                messagebox.showerror("Error", "please enter room no")
+
             elif self.meal.get() == "":
                 self.engine.say("please select meal field")
                 self.engine.runAndWait()
-                messagebox.showerror("Error","please select meal field")
-             
+                messagebox.showerror("Error", "please select meal field")
+
             elif self.no_of_days.get() == "":
-                 self.engine.say("no of days field is empty")
-                 self.engine.runAndWait()
-                 messagebox.showerror("Error","no of days field is empty")
-            
+                self.engine.say("no of days field is empty")
+                self.engine.runAndWait()
+                messagebox.showerror("Error", "no of days field is empty")
+
             elif self.total_cost.get() == "":
                 self.engine.say("Total cost field is empty")
-                self.engine.runAndWait()          
-                messagebox.showerror("Error","Total cost field is empty")           
+                self.engine.runAndWait()
+                messagebox.showerror("Error", "Total cost field is empty")
 
             else:
                 no_error = True
