@@ -7,6 +7,7 @@ from tkcalendar import DateEntry
 from tkinter import messagebox
 from db_connector import DBConnection
 import pyttsx3
+from datetime import *
 
 
 class Room:
@@ -51,68 +52,81 @@ class Room:
         return
 
     def form_validation(self):
-        checkin_date = [int(x) for x in self.checkin_date.get().split('/')]
-        checkout_date = [int(x) for x in self.checkout_date.get().split('/')]
-        
         no_error = False
-        if self.contact_num.get() == "":
-         self.engine.say("mobile field is empty")
-         self.engine.runAndWait()
-         messagebox.showerror("Error","mobile field is empty")
+        try:
+         checkin_date = [int(x) for x in self.checkin_date.get().split('/')]
+         checkout_date = [int(x) for x in self.checkout_date.get().split('/')]
 
-        elif(not re.match('^[\\d]+$', self.contact_num.get())):
-            self.engine.say('characters are not allowed')
-            self.engine.runAndWait()
-            messagebox.showerror(
-                "Error", "Characters are not allowed", parent=self.root)
+         date1 = date(checkin_date[2], checkin_date[0], checkin_date[1])
+         date2 = date(checkout_date[2], checkout_date[0], checkout_date[1])
 
-        elif(len(self.contact_num.get()) > 10 or len(self.contact_num.get()) <= 9):
-            self.engine.say('Enter 10 digits number only')
-            self.engine.runAndWait()
-            messagebox.showerror("Error", "Enter the 10 digits number only")
-        
-        elif self.checkin_date.get() == "":
-            self.engine.say("please fill checkin date")
-            self.engine.runAndWait()
-            messagebox.showerror("Error","check in date is empty")
-        
-        elif checkin_date[0]>12 or  checkout_date[0]>12:
-            self.engine.say("please enter valid month") 
-            self.engine.runAndWait()
-            messagebox.showerror("Error","Please enter the valid month")
-        
-        elif checkin_date[1]>31 or checkout_date[1]>31:
-            self.engine.say("please enter valid date")
-            self.engine.runAndWait()
-            messagebox.showerror("Error","Please enter the valid date")
-        
-        elif checkin_date[2]>checkout_date[2]:
-            self.engine.say("check in year is bigger. please enter valid year")
-            self.engine.runAndWait()
-            messagebox.showerror("Error","check in year is bigger. please enter valid year")
 
-        elif checkout_date[2]<checkin_date[2]:
-            self.engine.say("you have entered wrong check out date")
-            self.engine.runAndWait()
-        
-        elif checkin_date[0]>checkout_date[0]:
-            self.engine.say("check in date month is bigger. please enter valid month")
-            self.engine.runAndWait()
-            messagebox.showerror("Error","check in date month is bigger. please enter valid month")
-        
-        
-          
+         if self.contact_num.get() == "":
+             self.engine.say("mobile field is empty")
+             self.engine.runAndWait()
+             messagebox.showerror("Error", "mobile field is empty")
 
-        else:
-            no_error = True
+         elif(not re.match('^[\\d]+$', self.contact_num.get())):
+             self.engine.say('characters are not allowed')
+             self.engine.runAndWait()
+             messagebox.showerror(
+                 "Error", "Characters are not allowed", parent=self.root)
+
+         elif(len(self.contact_num.get()) > 10 or len(self.contact_num.get()) <= 9):
+             self.engine.say('Enter 10 digits number only')
+             self.engine.runAndWait()
+             messagebox.showerror("Error", "Enter the 10 digits number only")
+
+         elif self.checkin_date.get() == "":
+             self.engine.say("please fill checkin date")
+             self.engine.runAndWait()
+             messagebox.showerror("Error", "check in date is empty")
+
+         elif checkin_date[0] > 12 or checkout_date[0] > 12:
+             self.engine.say("please enter valid month")
+             self.engine.runAndWait()
+             messagebox.showerror("Error", "Please enter the valid month")
+
+         elif checkin_date[1] > 31 or checkout_date[1] > 31:
+             self.engine.say("please enter valid date")
+             self.engine.runAndWait()
+             messagebox.showerror("Error", "Please enter the valid date")
+
+         elif checkin_date[2] > checkout_date[2]:
+             self.engine.say("check in year is bigger. please enter valid year")
+             self.engine.runAndWait()
+             messagebox.showerror(
+                "Error", "check in year is bigger. please enter valid year")
+
+         elif checkout_date[2] < checkin_date[2]:
+             self.engine.say("you have entered wrong check out date")
+             self.engine.runAndWait()
+
+         elif checkin_date[0] > checkout_date[0]:
+             self.engine.say(
+                 "check in date month is bigger. please enter valid month")
+             self.engine.runAndWait()
+             messagebox.showerror(
+                 "Error", "check in date month is bigger. please enter valid month")
         
+         elif date1>date2:
+             self.engine.say("check in date is bigger.enter valid date")
+             self.engine.runAndWait()
+             messagebox.showerror("Error","check in date is bigger.enter valid date")        
+
+         else:
+             no_error = True
+        except Exception as e:
+            self.engine.say(str(e))
+            self.engine.runAndWait()
+            messagebox.showerror("Error",f"{str(e)}")
+
         return no_error
 
     def add_data(self):
         if(self.form_validation()):
             print("Success")
         return
-
 
     def __init__(self, root):
 
@@ -241,7 +255,7 @@ class Room:
 
         # add button
         add_btn = Button(bottom_frame, text="ADD", fg="gold", bg="black", font=(
-            "new times roman", 12, "bold"), padx=15, pady=2,command=self.add_data)
+            "new times roman", 12, "bold"), padx=15, pady=2, command=self.add_data)
         add_btn.grid(row=0, column=0)
 
         # update button
