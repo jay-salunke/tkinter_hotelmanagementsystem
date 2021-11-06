@@ -152,7 +152,27 @@ class Room:
 
     def add_data(self):
         if(self.form_validation()):
-            print("Success")
+            try:
+                db_cursor = self.db_con.db.cursor()
+                query = ("insert into roombooking_details(Contact_no,Checkin_date,Checkout_date,roomtype,room_available,meal,NoOfDays,Totalcost) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)")
+                values = (
+                    self.contact_num.get(),
+                    self.checkin_date.get(),
+                    self.checkout_date.get(),
+                    self.room_type.get(),
+                    self.available_room.get(),
+                    self.meal.get(),
+                    self.no_of_days.get(),
+                    self.total_cost.get()
+                )
+                db_cursor.execute(query, values)
+                self.db_con.db.commit()
+                self.engine.say("Data inserted successfully")
+                self.engine.runAndWait()
+                messagebox.showinfo("Success", "Data inserted successfully")
+
+            except Exception as e:
+                messagebox.showwarning("Warning", f"{str(e)}")
         return
 
     def __init__(self, root):
@@ -269,7 +289,7 @@ class Room:
         total_cost_lbl.place(x=190, y=175)
 
         total_cost_entry = ttk.Entry(left_side_frame, font=(
-            "new times roman", 9, "bold"), width=160, state="readonly", textvariable=self.total_cost)
+            "new times roman", 9, "bold"), width=160, textvariable=self.total_cost)
         total_cost_entry.place(x=190, y=195, width=160)
 
         ############################################################################################################
