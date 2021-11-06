@@ -1,3 +1,4 @@
+from os import execv
 import re
 from tkinter import *
 from tkinter import ttk
@@ -23,6 +24,19 @@ class Room:
     # changing index, changes voices. o for male
 
     engine.setProperty('voice', voices[1].id)
+
+    def get_row_details(self, events=""):
+        cursor_row = self.room_table.focus()
+        row_content = self.room_table.item(cursor_row)
+        row = row_content["values"]
+        self.contact_num.set(row[0])
+        self.checkin_date.set(row[1])
+        self.checkout_date.set(row[2])
+        self.room_type.set(row[3])
+        self.available_room.set(row[4])
+        self.meal.set(row[5])
+        self.no_of_days.set(row[6])
+        self.total_cost.set(row[7])
 
     def fetch_data(self):
         if self.contact_num.get() == "":
@@ -50,6 +64,8 @@ class Room:
                 messagebox.showwarning("Warning", f"{str(e)}")
 
         return
+
+        
 
     def form_validation(self):
         no_error = False
@@ -150,6 +166,22 @@ class Room:
 
         return no_error
 
+    def fetch_all_data(self):
+        try:
+            db_cursor = self.db_con.db.cursor()
+            query = ("select * from roombooking_details")
+            db_cursor.execute(query)
+            row = db_cursor.fetchall()
+            if len(row) != 0:
+                self.room_table.delete(*self.room_table.get_children())
+                for i in row:
+                    self.room_table.insert("",END,values=i)
+                self.db_con.db.commit()    
+
+        except Exception as e:
+            print(f"{str(e)}")
+        return    
+
     def add_data(self):
         if(self.form_validation()):
             try:
@@ -170,7 +202,7 @@ class Room:
                 self.engine.say("Data inserted successfully")
                 self.engine.runAndWait()
                 messagebox.showinfo("Success", "Data inserted successfully")
-
+                self.fetch_all_data()
             except Exception as e:
                 messagebox.showwarning("Warning", f"{str(e)}")
         return
@@ -394,11 +426,12 @@ class Room:
         self.room_table.column("Meal", width=100)
         self.room_table.column("No of days", width=100)
         self.room_table.column("Total cost", width=100)
-        # self.customer_details_table.bind(
-        #     "<ButtonRelease-1>", self.get_row_details)
+        self.room_table.bind(
+            "<ButtonRelease-1>", self.get_row_details)
 
         # filling content in frame from both side (i.e from x-axis and y-axis both)
         self.room_table.pack(fill=BOTH, expand=1)
+        self.fetch_all_data()
 
 
 if __name__ == '__main__':
