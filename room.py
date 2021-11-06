@@ -182,8 +182,27 @@ class Room:
             print(f"{str(e)}")
         return    
 
+
+    def user_exists(self):
+        exists = False 
+        try:
+            db_cursor = self.db_con.db.cursor()
+            query = ("select * from customers_details where customer_mobile_no = %s")
+            value=(self.contact_num.get(),)
+            db_cursor.execute(query,value)
+            row = db_cursor.fetchone()
+            if len(row) != 0: exists = True
+
+            return exists
+                
+
+
+        except Exception as e:
+            print(e)
+        return       
+
     def add_data(self):
-        if(self.form_validation()):
+        if(self.form_validation() and self.user_exists()):
             try:
                 db_cursor = self.db_con.db.cursor()
                 query = ("insert into roombooking_details(Contact_no,Checkin_date,Checkout_date,roomtype,room_available,meal,NoOfDays,Totalcost) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)")
@@ -206,6 +225,31 @@ class Room:
             except Exception as e:
                 messagebox.showwarning("Warning", f"{str(e)}")
         return
+
+    def update_data(self):
+        try:
+            if(self.user_exists()):
+                db_cursor = self.db_con.db.cursor()
+                db_cursor.execute("update roombooking_details SET Contact_no = %s,Checkin_date = %s,Checkout_date = %s,roomtype = %s,room_available = %s,meal =%s,NoOfDays = %s,Totalcost =%s ", (
+                    self.contact_num.get(),
+                    self.checkin_date.get(),
+                    self.checkout_date.get(),
+                    self.room_type.get(),
+                    self.available_room.get(),
+                    self.meal.get(),
+                    self.no_of_days.get(),
+                    self.total_cost.get()
+                ))
+                self.db_con.db.commit()
+                messagebox.showinfo("Success", "Data updated successfully")
+                self.fetch_all_data()
+                self.engine.say("Data updated successfully")
+                self.engine.runAndWait()
+
+        except Exception as e:
+            messagebox.showerror(
+                "Error", f"{self.db_con.db.rollback()}", parent=self.root)
+            print(e)    
 
     def __init__(self, root):
 
@@ -339,7 +383,7 @@ class Room:
 
         # update button
         update_btn = Button(bottom_frame, text="UPDATE", fg="gold", bg="black", font=(
-            "new times roman", 12, "bold"), padx=15, pady=2,)
+            "new times roman", 12, "bold"), padx=15, pady=2, command=self.update_data)
         update_btn.grid(row=0, column=1, padx=1)
 
         # delete button
