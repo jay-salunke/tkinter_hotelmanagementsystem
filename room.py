@@ -50,7 +50,7 @@ class Room:
                     "select * from customers_details where customer_mobile_no = %s")
                 value = (self.contact_num.get(),)
                 db_cursor.execute(query, value)
-                row = db_cursor.fetchall()
+                row = db_cursor.fetchone()
 
                 if row == None:
                     messagebox.showerror(
@@ -191,7 +191,9 @@ class Room:
             value=(self.contact_num.get(),)
             db_cursor.execute(query,value)
             row = db_cursor.fetchone()
-            if len(row) != 0: exists = True
+            if row != None: exists = True
+            else:
+                messagebox.showerror("Error","user doesn't exists. first please register the user")
 
             return exists
                 
