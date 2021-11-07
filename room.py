@@ -212,20 +212,21 @@ class Room:
         return
 
     def delete_data(self):
-        try:
-            db_cursor = self.db_con.db.cursor()
-            query = ("delete from roombooking_details where Contact_no = %s")
-            value = (self.contact_num.get(),)
-            db_cursor.execute(query,value)
-            self.db_con.db.commit()
-            self.engine.say("Data deleted successfully")
-            self.engine.runAndWait()
-            self.fetch_all_data()
-            messagebox.showinfo("Success","Data deleted successfully")
+        if self.user_exists():
+              try:
+               db_cursor = self.db_con.db.cursor()
+               query = ("delete from roombooking_details where Contact_no = %s")
+               value = (self.contact_num.get(),)
+               db_cursor.execute(query,value)
+               self.db_con.db.commit()
+               self.engine.say("Data deleted successfully")
+               self.engine.runAndWait()
+               self.fetch_all_data()
+               messagebox.showinfo("Success","Data deleted successfully")
             
 
-        except Exception as e:
-            print(self.db_con.db.rollback())    
+              except Exception as e:
+                print(self.db_con.db.rollback())    
         return
 
     def add_data(self):
