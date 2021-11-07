@@ -65,8 +65,6 @@ class Room:
 
         return
 
-        
-
     def form_validation(self):
         no_error = False
         try:
@@ -137,6 +135,11 @@ class Room:
                 self.engine.runAndWait()
                 messagebox.showerror("Error", "please select room type")
 
+            elif self.room_type.get() == "--Select room type":
+                self.engine.say("Please select the room type")
+                self.engine.runAndWait()
+                messagebox.showerror("Error","Please select the room type")    
+
             elif self.available_room.get() == "":
                 self.engine.say("please enter room number")
                 self.engine.runAndWait()
@@ -146,6 +149,12 @@ class Room:
                 self.engine.say("please select meal field")
                 self.engine.runAndWait()
                 messagebox.showerror("Error", "please select meal field")
+
+            elif self.meal.get() == "--Select meal--":
+                self.engine.say("Please select the meal type")
+                self.engine.runAndWait()
+                messagebox.showerror("Error","Please slect the meal type") 
+
 
             elif self.no_of_days.get() == "":
                 self.engine.say("no of days field is empty")
@@ -175,33 +184,33 @@ class Room:
             if len(row) != 0:
                 self.room_table.delete(*self.room_table.get_children())
                 for i in row:
-                    self.room_table.insert("",END,values=i)
-                self.db_con.db.commit()    
+                    self.room_table.insert("", END, values=i)
+                self.db_con.db.commit()
 
         except Exception as e:
             print(f"{str(e)}")
-        return    
-
+        return
 
     def user_exists(self):
-        exists = False 
+        exists = False
         try:
             db_cursor = self.db_con.db.cursor()
-            query = ("select * from customers_details where customer_mobile_no = %s")
-            value=(self.contact_num.get(),)
-            db_cursor.execute(query,value)
+            query = (
+                "select * from customers_details where customer_mobile_no = %s")
+            value = (self.contact_num.get(),)
+            db_cursor.execute(query, value)
             row = db_cursor.fetchone()
-            if row != None: exists = True
+            if row != None:
+                exists = True
             else:
-                messagebox.showerror("Error","user doesn't exists. first please register the user")
+                messagebox.showerror(
+                    "Error", "user doesn't exists. first please register the user")
 
             return exists
-                
-
 
         except Exception as e:
             print(e)
-        return       
+        return
 
     def add_data(self):
         if(self.form_validation() and self.user_exists()):
@@ -228,6 +237,19 @@ class Room:
                 messagebox.showwarning("Warning", f"{str(e)}")
         return
 
+    def clear_entry(self):
+        today = date.today()
+        today_date = today.strftime("%m/%d/%Y")
+        self.contact_num.set("")
+        self.checkin_date.set(today_date)
+        self.checkout_date.set(today_date)
+        self.room_type.set("--Select room type--")
+        self.available_room.set("")
+        self.meal.set("--Select meal type--")
+        self.no_of_days.set("")
+        self.total_cost.set("")
+        return    
+
     def update_data(self):
         try:
             if(self.user_exists()):
@@ -251,7 +273,7 @@ class Room:
         except Exception as e:
             messagebox.showerror(
                 "Error", f"{self.db_con.db.rollback()}", parent=self.root)
-            print(e)    
+            print(e)
 
     def __init__(self, root):
 
@@ -332,6 +354,7 @@ class Room:
 
         room_type_combo_box = ttk.Combobox(
             left_side_frame, font=("new times roman", 9, "bold"), width=160, textvariable=self.room_type)
+        room_type_combo_box["values"] = ["--Select room type---","AC","NON AC","Duplex","Luxury"]
         room_type_combo_box.place(x=190, y=78, width=160)
 
         # available room no entry
@@ -351,6 +374,7 @@ class Room:
         meal_combo_box = ttk.Combobox(left_side_frame, font=(
             "new times roman", 9, "bold"), textvariable=self.meal)
         meal_combo_box.place(x=190, y=135, width=160)
+        meal_combo_box["values"] = ["--Select meal--","Breakfast","Brunch","Lunch","Dinner"]
 
         # no of days entry
         no_of_days_lbl = ttk.Label(
@@ -395,7 +419,7 @@ class Room:
 
         # clear button
         clear_btn = Button(bottom_frame, text="CLEAR", fg="gold", bg="black", font=(
-            "new times roman", 12, "bold"), padx=5, pady=2,)
+            "new times roman", 12, "bold"), padx=5, pady=2,command=self.clear_entry)
         clear_btn.grid(row=0, column=3, padx=1, pady=3)
 
         bill_btn = Button(bottom_frame, text="BILL", fg="gold", bg="black", font=(
