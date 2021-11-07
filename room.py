@@ -49,9 +49,9 @@ class Room:
                     "select * from customers_details where customer_mobile_no = %s")
                 value = (self.contact_num.get(),)
                 db_cursor.execute(query, value)
-                row = db_cursor.fetchone()
+                row = db_cursor.fetchall()
 
-                if row == None:
+                if len(row) == 0:
                     messagebox.showerror(
                         "Error", "This number is not found", parent=self.root)
                 else:
