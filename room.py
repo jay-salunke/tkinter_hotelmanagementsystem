@@ -137,7 +137,7 @@ class Room:
             elif self.room_type.get() == "--Select room type":
                 self.engine.say("Please select the room type")
                 self.engine.runAndWait()
-                messagebox.showerror("Error","Please select the room type")    
+                messagebox.showerror("Error", "Please select the room type")
 
             elif self.available_room.get() == "":
                 self.engine.say("please enter room number")
@@ -152,8 +152,7 @@ class Room:
             elif self.meal.get() == "--Select meal--":
                 self.engine.say("Please select the meal type")
                 self.engine.runAndWait()
-                messagebox.showerror("Error","Please slect the meal type") 
-
+                messagebox.showerror("Error", "Please slect the meal type")
 
             elif self.no_of_days.get() == "":
                 self.engine.say("no of days field is empty")
@@ -213,20 +212,24 @@ class Room:
 
     def delete_data(self):
         if self.user_exists():
-              try:
-               db_cursor = self.db_con.db.cursor()
-               query = ("delete from roombooking_details where Contact_no = %s")
-               value = (self.contact_num.get(),)
-               db_cursor.execute(query,value)
-               self.db_con.db.commit()
-               self.engine.say("Data deleted successfully")
-               self.engine.runAndWait()
-               self.fetch_all_data()
-               messagebox.showinfo("Success","Data deleted successfully")
-            
+            try:
+                confirmation_msgbox = messagebox.askyesno(
+                    "hotel management system", "do you really want to remove the details of the user", parent=self.root)
+                if confirmation_msgbox > 0:
+                    db_cursor = self.db_con.db.cursor()
+                    query = (
+                        "delete from roombooking_details where Contact_no = %s")
+                    value = (self.contact_num.get(),)
+                    db_cursor.execute(query, value)
+                    self.db_con.db.commit()
+                    self.engine.say("Data deleted successfully")
+                    self.engine.runAndWait()
+                    messagebox.showinfo("Success", "Data deleted successfully")
+                    self.fetch_all_data()
+                    
 
-              except Exception as e:
-                print(self.db_con.db.rollback())    
+            except Exception as e:
+                print(self.db_con.db.rollback())
         return
 
     def add_data(self):
@@ -265,7 +268,7 @@ class Room:
         self.meal.set("--Select meal type--")
         self.no_of_days.set("")
         self.total_cost.set("")
-        return    
+        return
 
     def update_data(self):
         try:
@@ -371,7 +374,8 @@ class Room:
 
         room_type_combo_box = ttk.Combobox(
             left_side_frame, font=("new times roman", 9, "bold"), width=160, textvariable=self.room_type)
-        room_type_combo_box["values"] = ["--Select room type---","AC","NON AC","Duplex","Luxury"]
+        room_type_combo_box["values"] = [
+            "--Select room type---", "AC", "NON AC", "Duplex", "Luxury"]
         room_type_combo_box.place(x=190, y=78, width=160)
 
         # available room no entry
@@ -391,7 +395,8 @@ class Room:
         meal_combo_box = ttk.Combobox(left_side_frame, font=(
             "new times roman", 9, "bold"), textvariable=self.meal)
         meal_combo_box.place(x=190, y=135, width=160)
-        meal_combo_box["values"] = ["--Select meal--","Breakfast","Brunch","Lunch","Dinner"]
+        meal_combo_box["values"] = ["--Select meal--",
+                                    "Breakfast", "Brunch", "Lunch", "Dinner"]
 
         # no of days entry
         no_of_days_lbl = ttk.Label(
@@ -431,12 +436,12 @@ class Room:
 
         # delete button
         delete_btn = Button(bottom_frame, text="DELETE", fg="gold", bg="black", font=(
-            "new times roman", 12, "bold"), padx=15, pady=2,command=self.delete_data)
+            "new times roman", 12, "bold"), padx=15, pady=2, command=self.delete_data)
         delete_btn.grid(row=0, column=2, padx=1)
 
         # clear button
         clear_btn = Button(bottom_frame, text="CLEAR", fg="gold", bg="black", font=(
-            "new times roman", 12, "bold"), padx=5, pady=2,command=self.clear_entry)
+            "new times roman", 12, "bold"), padx=5, pady=2, command=self.clear_entry)
         clear_btn.grid(row=0, column=3, padx=1, pady=3)
 
         bill_btn = Button(bottom_frame, text="BILL", fg="gold", bg="black", font=(
