@@ -2,7 +2,6 @@ from os import execv
 import re
 from tkinter import *
 from tkinter import ttk
-from tkinter import font
 from PIL import Image, ImageTk
 from tkcalendar import DateEntry
 from tkinter import messagebox
@@ -212,6 +211,23 @@ class Room:
             print(e)
         return
 
+    def delete_data(self):
+        try:
+            db_cursor = self.db_con.db.cursor()
+            query = ("delete from roombooking_details where Contact_no = %s")
+            value = (self.contact_num.get(),)
+            db_cursor.execute(query,value)
+            self.db_con.db.commit()
+            self.engine.say("Data deleted successfully")
+            self.engine.runAndWait()
+            self.fetch_all_data()
+            messagebox.showinfo("Success","Data deleted successfully")
+            
+
+        except Exception as e:
+            print(self.db_con.db.rollback())    
+        return
+
     def add_data(self):
         if(self.form_validation() and self.user_exists()):
             try:
@@ -414,7 +430,7 @@ class Room:
 
         # delete button
         delete_btn = Button(bottom_frame, text="DELETE", fg="gold", bg="black", font=(
-            "new times roman", 12, "bold"), padx=15, pady=2,)
+            "new times roman", 12, "bold"), padx=15, pady=2,command=self.delete_data)
         delete_btn.grid(row=0, column=2, padx=1)
 
         # clear button
