@@ -29,8 +29,8 @@ class Room:
     def total(self):
         indate = self.checkin_date.get()
         outdate = self.checkout_date.get()
-        indate = datetime.strptime(indate, "%m/%d/%Y")
-        outdate = datetime.strptime(outdate, "%m/%d/%Y")
+        indate = datetime.strptime(indate, "%d/%m/%Y")
+        outdate = datetime.strptime(outdate, "%d/%m/%Y")
         self.no_of_days.set(abs(outdate-indate).days)
         return
 
@@ -362,9 +362,9 @@ class Room:
         check_in_lbl = ttk.Label(left_side_frame, text='Check in date', font=(
             "new times roman", 9, "bold"))
         check_in_lbl.place(x=190, y=2)
-        
+
         check_in_date_entry = DateEntry(
-            left_side_frame, font=("new times roman", 9, "bold"), date_pattern="mm/dd/y", mindate=date.today(), selectmode='day', textvariable=self.checkin_date)
+            left_side_frame, font=("new times roman", 9, "bold"), date_pattern="dd/mm/y", mindate=date.today(), selectmode='day', textvariable=self.checkin_date)
         check_in_date_entry.place(x=190, y=20, width=160)
 
         # check out date entry
@@ -372,7 +372,7 @@ class Room:
             left_side_frame, text="Check out date", font=("new times roman", 9, "bold"))
         check_out_lbl.place(x=2, y=60)
 
-        check_out_date_entry = DateEntry(left_side_frame, selectmode='day', mindate=date.today(), date_pattern="mm/dd/y", font=(
+        check_out_date_entry = DateEntry(left_side_frame, selectmode='day', mindate=date.today(), date_pattern="dd/mm/y", font=(
             "new times roman", 9, "bold"), textvariable=self.checkout_date)
         check_out_date_entry .place(x=5, y=78, width=160)
 
