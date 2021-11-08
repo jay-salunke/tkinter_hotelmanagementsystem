@@ -1,4 +1,4 @@
-from os import execv
+
 import re
 from tkinter import *
 from tkinter import ttk
@@ -7,7 +7,9 @@ from tkcalendar import DateEntry
 from tkinter import messagebox
 from db_connector import DBConnection
 import pyttsx3
-from datetime import *
+from time import strftime
+from datetime import datetime
+from datetime import date
 
 
 class Room:
@@ -23,6 +25,14 @@ class Room:
     # changing index, changes voices. o for male
 
     engine.setProperty('voice', voices[1].id)
+
+    def total(self):
+        indate = self.checkin_date.get()
+        outdate = self.checkout_date.get()
+        indate = datetime.strptime(indate,"%m/%d/%Y")
+        outdate = datetime.strptime(outdate,"%m/%d/%Y")
+        self.no_of_days.set(abs(outdate-indate).days)
+        return
 
     def get_row_details(self, events=""):
         cursor_row = self.room_table.focus()
@@ -353,9 +363,9 @@ class Room:
         check_in_lbl = ttk.Label(left_side_frame, text='Check in date', font=(
             "new times roman", 9, "bold"))
         check_in_lbl.place(x=190, y=2)
-
+        self.year = date.today()
         check_in_date_entry = DateEntry(
-            left_side_frame, font=("new times roman", 9, "bold"), selectmode='day', textvariable=self.checkin_date)
+            left_side_frame, font=("new times roman", 9, "bold"),date_pattern ="mm/dd/y", mindate=date.today(), selectmode='day', textvariable=self.checkin_date)
         check_in_date_entry.place(x=190, y=20, width=160)
 
         # check out date entry
@@ -363,7 +373,7 @@ class Room:
             left_side_frame, text="Check out date", font=("new times roman", 9, "bold"))
         check_out_lbl.place(x=2, y=60)
 
-        check_out_date_entry = DateEntry(left_side_frame, selectmode='day', font=(
+        check_out_date_entry = DateEntry(left_side_frame, selectmode='day', mindate=date.today(), date_pattern = "mm/dd/y", font=(
             "new times roman", 9, "bold"), textvariable=self.checkout_date)
         check_out_date_entry .place(x=5, y=78, width=160)
 
@@ -444,7 +454,7 @@ class Room:
             "new times roman", 12, "bold"), padx=5, pady=2, command=self.clear_entry)
         clear_btn.grid(row=0, column=3, padx=1, pady=3)
 
-        bill_btn = Button(bottom_frame, text="BILL", fg="gold", bg="black", font=(
+        bill_btn = Button(bottom_frame, command=self.total, text="BILL", fg="gold", bg="black", font=(
             "new times roman", 12, "bold"), padx=15, pady=2)
         bill_btn.grid(row=1, column=0, padx=2)
 
