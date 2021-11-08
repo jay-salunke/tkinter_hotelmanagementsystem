@@ -42,10 +42,11 @@ class Room:
         if self.meal.get() == "Breakfast" and self.room_type.get() == "AC":
             total_cost = no_of_days*ac_charges+1000
             gst_tax = (total_cost*9+9)/100
-        
+
         print(gst_tax)
-        print(total_cost)    
-        messagebox.showinfo("Total cost",f"SGST tax:{int(gst_tax/2)} \n CGST tax:{int(gst_tax/2)} \n Total tax: {int(gst_tax)}")
+        print(total_cost)
+        messagebox.showinfo(
+            "Total cost", f"SGST tax:{int(gst_tax/2)} \n CGST tax:{int(gst_tax/2)} \n Total tax: {int(gst_tax)}")
         self.total_cost.set(int(total_cost+gst_tax))
         return
 
@@ -422,7 +423,7 @@ class Room:
         meal_combo_box.place(x=190, y=135, width=160)
         meal_combo_box["values"] = ["--Select meal--",
                                     "Breakfast", "Brunch", "Lunch", "Dinner"]
-        meal_combo_box.current(0)                            
+        meal_combo_box.current(0)
 
         # no of days entry
         no_of_days_lbl = ttk.Label(
