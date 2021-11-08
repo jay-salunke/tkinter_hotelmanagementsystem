@@ -32,6 +32,21 @@ class Room:
         indate = datetime.strptime(indate, "%d/%m/%Y")
         outdate = datetime.strptime(outdate, "%d/%m/%Y")
         self.no_of_days.set(abs(outdate-indate).days)
+        ac_charges = 2500
+        non_ac_charges = 1000
+        luxury_charges = 3200
+        duplex_charges = 3000
+        no_of_days = int(self.no_of_days.get())
+        gst_tax = 0
+        total_cost = 0
+        if self.meal.get() == "Breakfast" and self.room_type.get() == "AC":
+            total_cost = no_of_days*ac_charges+1000
+            gst_tax = (total_cost*9+9)/100
+        
+        print(gst_tax)
+        print(total_cost)    
+        messagebox.showinfo("Total cost",f"SGST tax:{int(gst_tax/2)} \n CGST tax:{int(gst_tax/2)} \n Total tax: {int(gst_tax)}")
+        self.total_cost.set(int(total_cost+gst_tax))
         return
 
     def get_row_details(self, events=""):
@@ -385,6 +400,7 @@ class Room:
             left_side_frame, font=("new times roman", 9, "bold"), width=160, textvariable=self.room_type)
         room_type_combo_box["values"] = [
             "--Select room type---", "AC", "NON AC", "Duplex", "Luxury"]
+        room_type_combo_box.current(0)
         room_type_combo_box.place(x=190, y=78, width=160)
 
         # available room no entry
@@ -406,6 +422,7 @@ class Room:
         meal_combo_box.place(x=190, y=135, width=160)
         meal_combo_box["values"] = ["--Select meal--",
                                     "Breakfast", "Brunch", "Lunch", "Dinner"]
+        meal_combo_box.current(0)                            
 
         # no of days entry
         no_of_days_lbl = ttk.Label(
