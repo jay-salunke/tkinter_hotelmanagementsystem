@@ -262,23 +262,20 @@ class Customer:
 
     def search_validations(self):
         search_bool = False
-        try:
-            if self.search_type.get() == "--select search type" or self.search_type.get() == "":
+        if self.search_type.get() == "--select search type" or self.search_type.get() == "":
                 self.engine.say("Please select the search type")
                 self.engine.runAndWait()
                 messagebox.showerror("Error", "Please select the search type")
 
-            elif self.entry_text.get() == "":
+        elif self.entry_text.get() == "":
                 self.engine.say("search field is empty")
                 self.engine.runAndWait()
                 messagebox.showerror(
                     "Error", "Please fill the field to search")
-            else:
+        else:
                 search_bool = True
 
-        except Exception as e:
-            messagebox.showwarning("Warning", f"{e}")
-            print(e)
+        
         return search_bool
 
     def get_search_data(self):
