@@ -32,7 +32,7 @@ class room_manage:
         ######################################LEFT SIDE FRAME #######################################
          left_side_frame = LabelFrame(
              self.root, text='ADD NEW ROOM', relief=RIDGE, font=("new times roman", 11, "bold"))
-         left_side_frame.place(x=2, y=54, width=385, height=323)
+         left_side_frame.place(x=2, y=54, width=385, height=297)
 
          #floor
          floor_lbl  = ttk.Label(left_side_frame,text="Floor: ",font=(
@@ -95,17 +95,17 @@ class room_manage:
         ###########################################RIGHT SIDE FRAME###########################################
          right_side_frame = LabelFrame(
             self.root, text='ROOM DETAILS', relief=RIDGE, font=("new times roman", 11, "bold"))
-         right_side_frame.place(x=390, y=54, width=500, height=323)
+         right_side_frame.place(x=390, y=54, width=500, height=297)
 
          table_frame = Frame(right_side_frame, border=2)
-         table_frame.place(x=0, y=40, width=500, height=270)
+         table_frame.place(x=0, y=5, width=500, height=270)
 
         # X-axis and Y-axis ScrollBar
          scroll_x = Scrollbar(table_frame, orient=HORIZONTAL)
          scroll_y = Scrollbar(table_frame, orient=VERTICAL)
 
          self.room_table = ttk.Treeview(table_frame, columns=(
-            "Contact no", "Check in date", "Check out date", "Room type", "Room available", "Meal", "No of days", "Total cost"), xscrollcommand=scroll_x, yscrollcommand=scroll_y)
+            "floor","roomno","roomtype"), xscrollcommand=scroll_x, yscrollcommand=scroll_y)
 
          scroll_y.pack(side=RIGHT, fill=Y)
          scroll_x.pack(side=BOTTOM, fill=X)
@@ -115,29 +115,25 @@ class room_manage:
  
           
  
-         self.room_table.heading("Contact no", text="Contact")
-         self.room_table.heading("Check in date", text="Checkin")
-         self.room_table.heading("Check out date", text="Checkout")
-         self.room_table.heading("Room type", text="Roomtype")
-         self.room_table.heading("Room available", text="RoomAvailable")
-         self.room_table.heading("Meal", text="Meal")
-         self.room_table.heading("No of days", text="No_of_Days")
-         self.room_table.heading("Total cost", text="Total cost")
+         self.room_table.heading("floor", text="Floor")
+         self.room_table.heading("roomno", text="Room no")
+         self.room_table.heading("roomtype", text="Room type")
+   
          self.room_table["show"] = "headings"
 
         # setting column width
-         self.room_table.column("Contact no", width=100)
-         self.room_table.column("Check in date", width=100)
-         self.room_table.column("Check out date", width=100)
-         self.room_table.column("Room type", width=100)
-         self.room_table.column("Room available", width=100)
-         self.room_table.column("Meal", width=100)
-         self.room_table.column("No of days", width=100)
-         self.room_table.column("Total cost", width=100)
-        
+         self.room_table.column("floor", width=100)
+         self.room_table.column("roomno", width=100)
+         self.room_table.column("roomtype", width=100)
+         
 
         # filling content in frame from both side (i.e from x-axis and y-axis both)
          self.room_table.pack(fill=BOTH, expand=1)
+
+         footer_lbl = Label(self.root, fg='gold', bg='black',
+                        width=1100, height=2, text='Copyright')
+         footer_lbl.place(x=0, y=350)
+
 
 
         ######################################################################################################
