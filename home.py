@@ -3,6 +3,7 @@ from tkinter.font import BOLD
 from PIL import Image, ImageTk
 from customer import Customer
 from room import Room
+from room_manage import room_manage
 
 
 class Home:
@@ -13,6 +14,10 @@ class Home:
     def room_windows(self):
         self.room_window = Toplevel(self.root)
         self.room_window_obj = Room(self.room_window)
+
+    def room_manage(self):
+        self.room_manage = Toplevel(self.root)
+        self.room_manage = room_manage(self.room_manage)    
 
     def __init__(self, root):
 
@@ -73,7 +78,7 @@ class Home:
 
         # details button
         details_btn = Button(button_frame, width=15, bg='black', text="DETAILS", fg='gold',
-                             padx=15, pady=4, font=('new times roman', 12, 'bold'), cursor='hand1')
+                             padx=15, pady=4, font=('new times roman', 12, 'bold'), cursor='hand1', command=self.room_manage)
         details_btn.grid(row=2, column=0)
 
         # Logout button
