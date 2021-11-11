@@ -39,14 +39,26 @@ class Room:
         no_of_days = int(self.no_of_days.get())
         gst_tax = 0
         total_cost = 0
-        if self.meal.get() == "Breakfast" and self.room_type.get() == "AC":
-            total_cost = no_of_days*ac_charges+1000
+        if  self.room_type.get() == "AC":
+            total_cost = no_of_days*ac_charges+800
+            gst_tax = (total_cost*9+9)/100
+
+        elif self.room_type.get() == "NON AC":
+            total_cost = no_of_days*non_ac_charges+700
+            gst_tax = (total_cost*9+9)/100
+
+        elif self.room_type.get() == "Duplex":
+            total_cost = no_of_days*duplex_charges+900
+            gst_tax = (total_cost*9+9)/100
+
+        elif self.room_type.get() == "Luxury":
+            total_cost = no_of_days*luxury_charges+1000
             gst_tax = (total_cost*9+9)/100
 
         print(gst_tax)
         print(total_cost)
         messagebox.showinfo(
-            "Total cost", f"SGST tax:{int(gst_tax/2)} \n CGST tax:{int(gst_tax/2)} \n Total tax: {int(gst_tax)}")
+            "Total cost", f"SGST tax:{int(gst_tax/2)} \n CGST tax:{int(gst_tax/2)} \n Total tax: {int(gst_tax)}",parent = self.root)
         self.total_cost.set(int(total_cost+gst_tax))
         return
 
@@ -86,7 +98,7 @@ class Room:
                                         f"Data found!\n Customer id: {row[0][0]} \n Customer name: {row[0][1]} \n Customer email: {row[0][2]} \n Customer mobile: {row[0][3]} \n Customer nation: {row[0][4]} \n Customer state: {row[0][5]}\n Customer gender: {row[0][6]}\n Customer proof type: {row[0][7]}", parent=self.root)
 
             except Exception as e:
-                messagebox.showwarning("Warning", f"{str(e)}")
+                messagebox.showwarning("Warning", f"{str(e)}",parent = self.root)
 
         return
 
@@ -97,13 +109,12 @@ class Room:
             checkout_date = [int(x)
                              for x in self.checkout_date.get().split('/')]
 
-            date1 = date(checkin_date[2], checkin_date[0], checkin_date[1])
-            date2 = date(checkout_date[2], checkout_date[0], checkout_date[1])
+            
 
             if self.contact_num.get() == "":
                 self.engine.say("mobile field is empty")
                 self.engine.runAndWait()
-                messagebox.showerror("Error", "mobile field is empty")
+                messagebox.showerror("Error", "mobile field is empty",parent = self.root)
 
             elif(not re.match('^[\\d]+$', self.contact_num.get())):
                 self.engine.say('characters are not allowed')
@@ -115,87 +126,83 @@ class Room:
                 self.engine.say('Enter 10 digits number only')
                 self.engine.runAndWait()
                 messagebox.showerror(
-                    "Error", "Enter the 10 digits number only")
+                    "Error", "Enter the 10 digits number only",parent = self.root)
 
             elif self.checkin_date.get() == "":
                 self.engine.say("please fill checkin date")
                 self.engine.runAndWait()
-                messagebox.showerror("Error", "check in date is empty")
+                messagebox.showerror("Error", "check in date is empty",parent = self.root)
 
-            elif checkin_date[0] > 12 or checkout_date[0] > 12:
-                self.engine.say("please enter valid month")
-                self.engine.runAndWait()
-                messagebox.showerror("Error", "Please enter the valid month")
-
-            elif checkin_date[1] > 31 or checkout_date[1] > 31:
+            elif checkin_date[0] > 32 or checkout_date[0] > 32:
                 self.engine.say("please enter valid date")
                 self.engine.runAndWait()
-                messagebox.showerror("Error", "Please enter the valid date")
+                messagebox.showerror("Error", "Please enter the valid month",parent = self.root)
+
+            elif checkin_date[1] > 13 or checkout_date[1] > 13:
+                self.engine.say("please enter valid month")
+                self.engine.runAndWait()
+                messagebox.showerror("Error", "Please enter the valid date",parent = self.root)
 
             elif checkin_date[2] > checkout_date[2]:
                 self.engine.say(
                     "check in year is bigger. please enter valid year")
                 self.engine.runAndWait()
                 messagebox.showerror(
-                    "Error", "check in year is bigger. please enter valid year")
+                    "Error", "check in year is bigger. please enter valid year",parent = self.root)
 
             elif checkout_date[2] < checkin_date[2]:
                 self.engine.say("you have entered wrong check out date")
                 self.engine.runAndWait()
+                messagebox.showerror("Error","you have entered wrong check out date",parent = self.root)
 
             elif checkin_date[0] > checkout_date[0]:
                 self.engine.say(
                     "check in date month is bigger. please enter valid month")
                 self.engine.runAndWait()
                 messagebox.showerror(
-                    "Error", "check in date month is bigger. please enter valid month")
+                    "Error", "check in date month is bigger. please enter valid month",parent = self.root)
 
-            elif date1 > date2:
-                self.engine.say("check in date is bigger.enter valid date")
-                self.engine.runAndWait()
-                messagebox.showerror(
-                    "Error", "check in date is bigger.enter valid date")
             elif self.room_type.get() == "":
                 self.engine.say("please select room type")
                 self.engine.runAndWait()
-                messagebox.showerror("Error", "please select room type")
+                messagebox.showerror("Error", "please select room type",parent = self.root)
 
             elif self.room_type.get() == "--Select room type":
                 self.engine.say("Please select the room type")
                 self.engine.runAndWait()
-                messagebox.showerror("Error", "Please select the room type")
+                messagebox.showerror("Error", "Please select the room type",parent = self.root)
 
             elif self.available_room.get() == "":
                 self.engine.say("please enter room number")
                 self.engine.runAndWait()
-                messagebox.showerror("Error", "please enter room no")
+                messagebox.showerror("Error", "please enter room no",parent = self.root)
 
             elif self.meal.get() == "":
                 self.engine.say("please select meal field")
                 self.engine.runAndWait()
-                messagebox.showerror("Error", "please select meal field")
+                messagebox.showerror("Error", "please select meal field",parent = self.root)
 
             elif self.meal.get() == "--Select meal--":
                 self.engine.say("Please select the meal type")
                 self.engine.runAndWait()
-                messagebox.showerror("Error", "Please slect the meal type")
+                messagebox.showerror("Error", "Please slect the meal type",parent = self.root)
 
             elif self.no_of_days.get() == "":
                 self.engine.say("no of days field is empty")
                 self.engine.runAndWait()
-                messagebox.showerror("Error", "no of days field is empty")
+                messagebox.showerror("Error", "no of days field is empty",parent = self.root)
 
             elif self.total_cost.get() == "":
                 self.engine.say("Total cost field is empty")
                 self.engine.runAndWait()
-                messagebox.showerror("Error", "Total cost field is empty")
+                messagebox.showerror("Error", "Total cost field is empty",parent = self.root)
 
             else:
                 no_error = True
         except Exception as e:
             self.engine.say(str(e))
             self.engine.runAndWait()
-            messagebox.showerror("Error", f"{str(e)}")
+            messagebox.showerror("Error", f"{str(e)}",parent = self.root)
 
         return no_error
 
@@ -228,7 +235,7 @@ class Room:
                 exists = True
             else:
                 messagebox.showerror(
-                    "Error", "user doesn't exists. first please register the user")
+                    "Error", "user doesn't exists. first please register the user",parent = self.root)
 
             return exists
 
@@ -250,7 +257,7 @@ class Room:
                     self.db_con.db.commit()
                     self.engine.say("Data deleted successfully")
                     self.engine.runAndWait()
-                    messagebox.showinfo("Success", "Data deleted successfully")
+                    messagebox.showinfo("Success", "Data deleted successfully",parent = self.root)
                     self.fetch_all_data()
 
             except Exception as e:
@@ -276,10 +283,10 @@ class Room:
                 self.db_con.db.commit()
                 self.engine.say("Data inserted successfully")
                 self.engine.runAndWait()
-                messagebox.showinfo("Success", "Data inserted successfully")
+                messagebox.showinfo("Success", "Room booked successfully",parent = self.root)
                 self.fetch_all_data()
             except Exception as e:
-                messagebox.showwarning("Warning", f"{str(e)}")
+                messagebox.showwarning("Warning", f"{str(e)}",parent = self.root)
         return
 
     def clear_entry(self):
@@ -299,18 +306,17 @@ class Room:
         try:
             if(self.user_exists()):
                 db_cursor = self.db_con.db.cursor()
-                db_cursor.execute("update roombooking_details SET Contact_no = %s,Checkin_date = %s,Checkout_date = %s,roomtype = %s,room_available = %s,meal =%s,NoOfDays = %s,Totalcost =%s ", (
+                db_cursor.execute("update roombooking_details SET Contact_no = %s,Checkin_date = %s,Checkout_date = %s,roomtype = %s,meal =%s,NoOfDays = %s,Totalcost =%s ", (
                     self.contact_num.get(),
                     self.checkin_date.get(),
                     self.checkout_date.get(),
                     self.room_type.get(),
-                    self.available_room.get(),
                     self.meal.get(),
                     self.no_of_days.get(),
                     self.total_cost.get()
                 ))
                 self.db_con.db.commit()
-                messagebox.showinfo("Success", "Data updated successfully")
+                messagebox.showinfo("Success", "Data updated successfully",parent = self.root)
                 self.fetch_all_data()
                 self.engine.say("Data updated successfully")
                 self.engine.runAndWait()
@@ -319,6 +325,53 @@ class Room:
             messagebox.showerror(
                 "Error", f"{self.db_con.db.rollback()}", parent=self.root)
             print(e)
+
+    
+    def search_validations(self):
+        search_bool = False
+        if self.search_type.get() == "--select search type" or self.search_type.get() == "":
+                self.engine.say("Please select the search type")
+                self.engine.runAndWait()
+                messagebox.showerror("Error", "Please select the search type",parent = self.root)
+
+        elif self.entry_text.get() == "":
+                self.engine.say("search field is empty")
+                self.engine.runAndWait()
+                messagebox.showerror(
+                    "Error", "Please fill the field to search",parent = self.root)
+        else:
+                search_bool = True
+
+        
+        return search_bool
+
+    def get_search_data(self):
+        if(self.search_validations()):
+            query = ""
+            data = ""
+            if self.search_type.get() == "Contact no":
+                query = """select * from roombooking_details where Contact_no like %s """
+
+            elif self.search_type.get() == "Room no":
+                query = """select * from roombooking_details where room_available like %s """
+
+            else:
+                self.engine.say("Please select right search type")
+                self.engine.runAndWait()
+                messagebox.showwarning(
+                    "Warning", "Please select the right search type",parent = self.root)
+
+            db_cursor = self.db_con.db.cursor()
+            db_cursor.execute(query, (self.entry_text.get()+"%",))
+            rows = db_cursor.fetchall()
+            if len(rows) != 0:
+                self.room_table.delete(
+                    *self.room_table.get_children())
+                for i in rows:
+                    self.room_table.insert("", END, values=i)
+                    self.db_con.db.commit()
+
+        return
 
     def __init__(self, root):
 
@@ -487,25 +540,25 @@ class Room:
         # search combo box
         search = ("--select search type", "Contact no", "Room no")
         combo_search = ttk.Combobox(
-            right_side_frame, font=("new times roman", 9, "bold"))
+            right_side_frame, textvariable=self.search_type,font=("new times roman", 9, "bold"))
         combo_search['values'] = search
         combo_search.current(0)
         combo_search.grid(row=0, column=1, padx=3)
 
         # search entry
         self.entry_text = StringVar()
-        search_entry = Entry(right_side_frame, font=(
+        search_entry = Entry(right_side_frame,textvariable=self.entry_text ,font=(
             "new times roman", 9, "bold"))
         search_entry.grid(row=0, column=2, padx=3)
 
         # show button
         show_btn = Button(right_side_frame, text="SHOW", font=(
-            "new times roman", 9, "bold"), fg="gold", bg="black")
+            "new times roman", 9, "bold"), fg="gold", bg="black",command=self.get_search_data)
         show_btn.grid(row=0, column=3, padx=3)
 
         # show all button
         show_all_btn = Button(right_side_frame, text="SHOW ALL", font=(
-            "new times roman", 9, "bold"), fg="gold", bg="black")
+            "new times roman", 9, "bold"), fg="gold", bg="black",command=self.fetch_all_data)
         show_all_btn.grid(row=0, column=4, padx=3)
 
         table_frame = Frame(right_side_frame, border=2)
