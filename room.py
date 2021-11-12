@@ -306,15 +306,18 @@ class Room:
         try:
             if(self.user_exists()):
                 db_cursor = self.db_con.db.cursor()
-                db_cursor.execute("update roombooking_details SET Contact_no = %s,Checkin_date = %s,Checkout_date = %s,roomtype = %s,meal =%s,NoOfDays = %s,Totalcost =%s ", (
-                    self.contact_num.get(),
+                query=("update roombooking_details SET Checkin_date = %s,Checkout_date = %s,roomtype = %s,room_available = %s,meal =%s,NoOfDays = %s,Totalcost =%s where Contact_no = %s")
+                values = (
                     self.checkin_date.get(),
                     self.checkout_date.get(),
                     self.room_type.get(),
+                    self.available_room.get(),
                     self.meal.get(),
                     self.no_of_days.get(),
-                    self.total_cost.get()
-                ))
+                    self.total_cost.get(),
+                    self.contact_num.get(),
+                )
+                db_cursor.execute(query,values)
                 self.db_con.db.commit()
                 messagebox.showinfo("Success", "Data updated successfully",parent = self.root)
                 self.fetch_all_data()
@@ -418,9 +421,9 @@ class Room:
             "new times roman", 9, "bold"))
         name_lbl.place(x=2, y=2)
 
-        name_entry = ttk.Entry(left_side_frame, font=(
+        contact_entry = ttk.Entry(left_side_frame, font=(
             "new times roman", 9, "bold"), textvariable=self.contact_num)
-        name_entry.place(x=5, y=20, width=120)
+        contact_entry.place(x=5, y=20, width=120)
 
         # fetchbutton
         fetch_button = Button(left_side_frame, font=("new times roman", 9, "bold"),

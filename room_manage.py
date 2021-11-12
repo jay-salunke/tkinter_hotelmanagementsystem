@@ -1,10 +1,16 @@
 
+
+import re
 from tkinter import *
-from PIL import Image, ImageTk
 from tkinter import ttk
+from PIL import Image, ImageTk
+from tkcalendar import DateEntry
 from tkinter import messagebox
-import pyttsx3
 from db_connector import DBConnection
+import pyttsx3
+from time import strftime
+from datetime import datetime
+from datetime import date
 
 class RoomManage:
     db_con = DBConnection()
@@ -35,7 +41,7 @@ class RoomManage:
             self.engine.runAndWait()
             messagebox.showerror("Error","Room no entry is empty")
 
-        elif self.Room_type.get() == "":
+        elif self.Room_type.get() == "" or self.Room_type.get() == "--Select room type---":
             self.engine.say("Room type entry is empty")
             self.engine.runAndWait()
             messagebox.showerror("Error","Room type entry is empty")
@@ -67,6 +73,28 @@ class RoomManage:
                     "Warning", f"{str(e)}", parent=self.root)
         return
 
+    def check_room_exists(self):
+        room_exists = False
+        try:
+            db_cursror = self.db_con.db.cursor()
+            query = ("select * from room_details where Room_no = %s")
+            values = (
+                self.Room_no.get(),
+                )
+            db_cursror.execute(query,values)
+            row = db_cursror.fetchall()
+            if len(row) == 0:
+                self.engine.say("Room data does'nt exists.First add the new room")
+                self.engine.runAndWait()
+                messagebox.showerror("Error","Room data does'nt exists.First add the new room")
+            else:
+                room_exists = True    
+
+        except Exception as e:
+            messagebox.showwarning("Warning",e)
+        
+        return room_exists         
+
     def fetch_all_data(self):
         try:
             db_cursor = self.db_con.db.cursor()
@@ -88,7 +116,24 @@ class RoomManage:
         row = row_content["values"]
         self.Floor.set(row[0])
         self.Room_no.set(row[1])
-        self.Room_type.set(row[2])        
+        self.Room_type.set(row[2])
+
+    def update_data(self):
+        if (self.check_room_exists()):
+            try:
+                cursor = self.db_con.db.cursor()
+                cursor.execute("update room_details set Floor = %s,Room_type = %s where Room_no = %s",(
+                    self.Floor.get(),
+                    self.Room_type.get(),
+                    self.Room_no.get(),
+                ))
+                self.db_con.db.commit()
+                self.fetch_all_data()
+                messagebox.showinfo("Success","Data inserted successfully",parent =self.root)
+            except Exception as e:
+                messagebox.showwarning("Warning",str(e),parent = self.root)    
+        
+        return            
  
     def __init__(self,root):
 
@@ -139,6 +184,8 @@ class RoomManage:
 
        room_type_combo_box = ttk.Combobox(left_side_frame,font=("new times roman",9,"bold"),width=17,textvariable=self.Room_type)
        room_type_combo_box.grid(row=2,column=1,pady=5)
+       room_type_combo_box['values'] = ["--Select room type---", "AC", "NON AC", "Duplex", "Luxury"]
+       room_type_combo_box.current(0)
        ###################################### LEFT SIDE FRAME BUTTONS ############################################
 
         # bottom frame
@@ -152,7 +199,7 @@ class RoomManage:
 
         # update button
        update_btn = Button(bottom_frame, text="UPDATE", fg="gold", bg="black", font=(
-           "new times roman", 12, "bold"), padx=15, pady=2)
+           "new times roman", 12, "bold"), padx=15, pady=2,command=self.update_data)
        update_btn.grid(row=0, column=1, padx=1)
 
         # delete button
