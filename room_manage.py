@@ -133,7 +133,13 @@ class RoomManage:
             except Exception as e:
                 messagebox.showwarning("Warning",str(e),parent = self.root)    
         
-        return            
+        return
+
+    def clear_entry(self):
+        self.Floor.set("")
+        self.Room_no.set("")
+        self.Room_type.set("--Select room type---")
+        return                
  
     def __init__(self,root):
 
@@ -209,7 +215,7 @@ class RoomManage:
 
         # clear button
        clear_btn = Button(bottom_frame, text="CLEAR", fg="gold", bg="black", font=(
-           "new times roman", 12, "bold"), padx=5, pady=2)
+           "new times roman", 12, "bold"), padx=5, pady=2,command=self.clear_entry)
        clear_btn.grid(row=0, column=3, padx=1, pady=3)
 
        ####################################################################################################
