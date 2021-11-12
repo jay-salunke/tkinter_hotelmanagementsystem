@@ -8,7 +8,65 @@ import pyttsx3
 from db_connector import DBConnection
 
 class RoomManage:
-   def __init__(self,root):
+    db_con = DBConnection()
+
+    engine = pyttsx3.init()
+
+    ################# VOICE #####################
+    # getting details of current voice
+    voices = engine.getProperty('voices')
+
+    # engine.setProperty('voice', voices[0].id)
+    # changing index, changes voices. o for male
+
+    engine.setProperty('voice', voices[1].id)
+   ###############################################
+
+    def form_validation(self):
+        
+        error = False
+        if self.Floor.get() == "":
+            self.engine.say("Floor entry is empty")
+            self.engine.runAndWait()
+            messagebox.showerror("Error","Floor entry is empty")
+
+        elif self.Room_no.get() == "":
+            self.engine.say("Room no entry is empty")
+            self.engine.runAndWait()
+            messagebox.showerror("Error","Room no entry is empty")
+
+        elif self.Room_type.get() == "":
+            self.engine.say("Room type entry is empty")
+            self.engine.runAndWait()
+            messagebox.showerror("Error","Room type entry is empty")
+
+        else:
+            error = True    
+            
+        return error
+
+    def add_data(self):
+        if(self.form_validation()):
+            try:
+                db_cursor = self.db_con.db.cursor()
+                db_cursor.execute("insert into room_details(Floor,Room_no,Room_type) VALUES(%s,%s,%s)", (
+                    self.Floor.get(),
+                    self.Room_no.get(),
+                    self.Room_type.get()
+                ))
+                self.db_con.db.commit()
+                self.engine.say("Data inserted successfully")
+                self.engine.runAndWait()
+                messagebox.showinfo(
+                    "Success", "Data inserted successfully", parent=self.root)
+
+            except Exception as e:
+                self.db_con.db.rollback()
+                messagebox.showwarning(
+                    "Warning", f"{str(e)}", parent=self.root)
+        return
+ 
+    def __init__(self,root):
 
        db_con = DBConnection()
        self.root = root
@@ -65,7 +123,7 @@ class RoomManage:
 
         # add button
        add_btn = Button(bottom_frame,text="ADD", fg="gold", bg="black", font=(
-           "new times roman", 12, "bold"), padx=15, pady=2)
+           "new times roman", 12, "bold"), padx=15, pady=2,command=self.add_data)
        add_btn.grid(row=0, column=0)
 
         # update button
@@ -92,7 +150,7 @@ class RoomManage:
             self.root, text='VIEW ROOM DETAILS', relief=RIDGE, font=("new times roman", 11, "bold"))
        right_side_frame.place(x=390, y=54, width=500, height=302)
  
-        #######################################TABLE #########################################
+        ############################################# TABLE ###############################################
 
         # table frame
        table_frame = Frame(right_side_frame, border=2)
@@ -123,12 +181,12 @@ class RoomManage:
         # filling content in frame from both side (i.e from x-axis and y-axis both)
        self.room_table.pack(fill=BOTH, expand=1)
 
-        ##############################################################################################
+        #####################################################################################################
 
 
 
 
-       ##################################################################################################### 
+       ###################################################################################################### 
        
 if __name__ == '__main__':
     root = Tk()
