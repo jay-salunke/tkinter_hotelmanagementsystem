@@ -35,7 +35,7 @@ class RoomManage:
 
        ####################################### LEFT SIDE FRAME ######################################### 
        left_side_frame = LabelFrame(self.root, text='ADD ROOM DETAILS', relief=RIDGE, font=("new times roman", 11, "bold"))
-       left_side_frame.place(x=2, y=54, width=385, height=330)
+       left_side_frame.place(x=2, y=54, width=385, height=302)
 
        #floor entry
        floor_lbl = Label(left_side_frame,text="Floor: ",font=("new times roman",9,"bold"))
@@ -83,11 +83,52 @@ class RoomManage:
            "new times roman", 12, "bold"), padx=5, pady=2)
        clear_btn.grid(row=0, column=3, padx=1, pady=3)
 
-        ####################################################################################################
+       ####################################################################################################
+
+        ##################################### RIGHT SIDE FRAME ############################################
+       self.search_type = StringVar()
+        # frame
+       right_side_frame = LabelFrame(
+            self.root, text='VIEW ROOM DETAILS', relief=RIDGE, font=("new times roman", 11, "bold"))
+       right_side_frame.place(x=390, y=54, width=500, height=302)
+ 
+        #######################################TABLE #########################################
+
+        # table frame
+       table_frame = Frame(right_side_frame, border=2)
+       table_frame.place(x=0, y=10, width=500, height=270)
+       # X-axis and Y-axis ScrollBar
+       scroll_x = Scrollbar(table_frame, orient=HORIZONTAL)
+       scroll_y = Scrollbar(table_frame, orient=VERTICAL)
+       self.room_table = ttk.Treeview(table_frame, columns=(
+           "floor", "room_no", "room_type"), xscrollcommand=scroll_x, yscrollcommand=scroll_y)
+       scroll_y.pack(side=RIGHT, fill=Y)
+       scroll_x.pack(side=BOTTOM, fill=X)
+       scroll_x.config(command=self.room_table.xview)
+       scroll_y.config(command=self.room_table.yview)
+       # table heading
+       self.room_table.heading("floor", text="Floor")
+       self.room_table.heading("room_no", text="Room no")
+       self.room_table.heading("room_type", text="Room type")
+       
+       self.room_table["show"] = "headings"
+       # setting column width
+       self.room_table.column("floor", width=100)
+       self.room_table.column("room_no", width=100)
+       self.room_table.column("room_type", width=100)
+      
+        # self.room_table.bind(
+        #     "<ButtonRelease-1>", self.get_row_details)
+
+        # filling content in frame from both side (i.e from x-axis and y-axis both)
+       self.room_table.pack(fill=BOTH, expand=1)
+
+        ##############################################################################################
 
 
 
-       ################################################################################################# 
+
+       ##################################################################################################### 
        
 if __name__ == '__main__':
     root = Tk()
