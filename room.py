@@ -7,7 +7,6 @@ from tkcalendar import DateEntry
 from tkinter import messagebox
 from db_connector import DBConnection
 import pyttsx3
-from time import strftime
 from datetime import datetime
 from datetime import date
 
