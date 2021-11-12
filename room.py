@@ -102,6 +102,17 @@ class Room:
 
         return
 
+    def fetch_room_numbers(self):
+        room_numbers = []
+        try:
+            cursor = self.db_con.db.cursor()
+            cursor.execute("select Room_no from room_details")
+            rows = cursor.fetchall()
+            room_numbers = [x for x in rows]
+        except Exception as e:
+            print("")    
+        return room_numbers    
+
     def form_validation(self):
         no_error = False
         try:
@@ -465,9 +476,10 @@ class Room:
             left_side_frame, text="Available room no", font=("new times roman", 9, "bold"))
         available_room_no_lbl.place(x=2, y=116)
 
-        available_room_no_entry = ttk.Entry(left_side_frame, font=(
-            "new times roman", 9, "bold"), textvariable=self.available_room)
-        available_room_no_entry.place(x=5, y=135, width=160)
+        available_room_no_combobox = ttk.Combobox(left_side_frame,font=("new times roman",9,"bold"),textvariable=self.available_room)
+        available_room_no_combobox['values'] = self.fetch_room_numbers()
+        available_room_no_combobox.place(x=5,y=135,width=160)
+        available_room_no_combobox.current(0)
 
         # meal combo box
         meal_lbl = ttk.Label(left_side_frame, text="Meal",
