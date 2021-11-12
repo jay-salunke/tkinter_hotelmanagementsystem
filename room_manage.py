@@ -1,6 +1,5 @@
 
 from tkinter import *
-from tkinter import font
 from PIL import Image, ImageTk
 from tkinter import ttk
 from tkinter import messagebox
@@ -21,6 +20,7 @@ class RoomManage:
 
     engine.setProperty('voice', voices[1].id)
    ###############################################
+   
 
     def form_validation(self):
         
@@ -59,12 +59,36 @@ class RoomManage:
                 self.engine.runAndWait()
                 messagebox.showinfo(
                     "Success", "Data inserted successfully", parent=self.root)
+                self.fetch_all_data()    
 
             except Exception as e:
                 self.db_con.db.rollback()
                 messagebox.showwarning(
                     "Warning", f"{str(e)}", parent=self.root)
         return
+
+    def fetch_all_data(self):
+        try:
+            db_cursor = self.db_con.db.cursor()
+            query = ("select * from room_details")
+            db_cursor.execute(query)
+            row = db_cursor.fetchall()
+            if len(row) != 0:
+                self.room_table.delete(*self.room_table.get_children())
+                for i in row:
+                    self.room_table.insert("", END, values=i)
+                self.db_con.db.commit()
+
+        except Exception as e:
+            messagebox.showerror(self.db_con.db.rollback())
+        return
+    def get_row_details(self, events=""):
+        cursor_row = self.room_table.focus()
+        row_content = self.room_table.item(cursor_row)
+        row = row_content["values"]
+        self.Floor.set(row[0])
+        self.Room_no.set(row[1])
+        self.Room_type.set(row[2])        
  
     def __init__(self,root):
 
@@ -175,11 +199,12 @@ class RoomManage:
        self.room_table.column("room_no", width=100)
        self.room_table.column("room_type", width=100)
       
-        # self.room_table.bind(
-        #     "<ButtonRelease-1>", self.get_row_details)
+       self.room_table.bind(
+             "<ButtonRelease-1>", self.get_row_details)
 
-        # filling content in frame from both side (i.e from x-axis and y-axis both)
+        #filling content in frame from both side (i.e from x-axis and y-axis both)
        self.room_table.pack(fill=BOTH, expand=1)
+       self.fetch_all_data()
 
         #####################################################################################################
 
