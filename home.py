@@ -17,7 +17,10 @@ class Home:
 
     def room_manage(self):
         self.room_manage = Toplevel(self.root)
-        self.room_manage = RoomManage(self.room_manage)    
+        self.room_manage = RoomManage(self.room_manage)
+    
+    def logout(self):
+        self.root.destroy()       
 
     def __init__(self, root):
 
@@ -84,7 +87,7 @@ class Home:
         # Logout button
 
         logout_btn = Button(button_frame, width=15, bg='black', text="LOGOUT", fg='gold',
-                            padx=15, pady=4, font=('new times roman', 12, 'bold'), cursor='hand1')
+                            padx=15, pady=4, font=('new times roman', 12, 'bold'), cursor='hand1',command=self.logout)
         logout_btn.grid(row=3, column=0)
 
         #################################### RIGHT SIDE IMAGE #############################################
