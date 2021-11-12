@@ -134,6 +134,20 @@ class RoomManage:
                 messagebox.showwarning("Warning",str(e),parent = self.root)    
         
         return
+    def delete_data(self):
+        try:
+            cursor = self.db_con.db.cursor()
+            cursor.execute("delete from room_details where Room_no = %s",(
+                self.Room_no.get(),
+            ))
+            self.db_con.db.commit()
+            self.engine.say("Data deleted successfully")
+            self.engine.runAndWait()
+            self.fetch_all_data()
+            messagebox.showerror("Error","Data deleted successfully")
+        except Exception as e:
+            messagebox.showwarning("Warning",e,parent = self.root)
+        return    
 
     def clear_entry(self):
         self.Floor.set("")
@@ -210,7 +224,7 @@ class RoomManage:
 
         # delete button
        delete_btn = Button(bottom_frame, text="DELETE", fg="gold", bg="black", font=(
-           "new times roman", 12, "bold"), padx=15, pady=2)
+           "new times roman", 12, "bold"),command=self.delete_data, padx=15, pady=2)
        delete_btn.grid(row=0, column=2, padx=1)
 
         # clear button
