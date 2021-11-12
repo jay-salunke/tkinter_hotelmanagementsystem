@@ -3,7 +3,7 @@ from tkinter.font import BOLD
 from PIL import Image, ImageTk
 from customer import Customer
 from room import Room
-from room_manage import room_manage
+from room_manage import RoomManage
 
 
 class Home:
@@ -17,7 +17,7 @@ class Home:
 
     def room_manage(self):
         self.room_manage = Toplevel(self.root)
-        self.room_manage = room_manage(self.room_manage)    
+        self.room_manage = RoomManage(self.room_manage)    
 
     def __init__(self, root):
 
