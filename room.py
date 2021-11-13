@@ -24,6 +24,7 @@ class Room:
     # changing index, changes voices. o for male
 
     engine.setProperty('voice', voices[1].id)
+   
 
     def total(self):
         indate = self.checkin_date.get()
