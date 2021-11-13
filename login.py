@@ -1,8 +1,56 @@
 from tkinter import *
 from tkinter import ttk
-from tkinter import font
+from tkinter import messagebox
+from db_connector import DBConnection
+import re
 
+from home import Home
 class Login:
+    connection = DBConnection()
+
+    def home(self):
+        root = Tk()
+        Home(root)
+        return 
+    
+    def validate(self):
+        error = False
+        email_regex = r"[\w\.%+]+@[\w]+\.[\w]{2,}$"
+        if self.email.get() == "":
+            messagebox.showerror("Error","Email ID is empty")
+        
+        elif (not re.findall(email_regex,self.email.get())):
+            messagebox.showerror("Error","Email ID is invalid")
+
+        elif self.password.get() == "":
+            messagebox.showerror("Error","Password is empty")
+
+        else: error = True
+        return error
+
+
+    def check_details(self):
+        if self.validate():
+            try:
+                cursor = self.connection.db.cursor()
+                cursor.execute("select * from admin_details where email_id = %s and password= %s",(
+                    self.email.get(),
+                    self.password.get(),
+                ))
+
+                rows= cursor.fetchall()
+                if len(rows) >0:
+                    messagebox.showinfo("Success","you have successully logged in!.....")
+                    self.root.destroy()
+                    self.home()
+                    
+                else:
+                    messagebox.showerror("Error","Login Failed")    
+
+            except Exception as e:
+                messagebox.showerror("Error",e)    
+        return            
+     
     def __init__(self,root):
         self.root = root
         self.root.geometry("400x400")
@@ -30,7 +78,7 @@ class Login:
         forgot_password_lbl.place(x=100,y=235)
 
         #login button
-        login_btn = Button(self.root,text="LOGIN",font=("new times roman",10,"bold"),padx=70)
+        login_btn = Button(self.root,text="LOGIN",font=("new times roman",10,"bold"),padx=70,command=self.check_details)
         login_btn.place(x=100,y=270)
 
 
