@@ -6,21 +6,22 @@ from room import Room
 from room_manage import RoomManage
 
 
+
 class Home:
     def customer_window(self):
         self.customer_window = Toplevel(self.root)
-        self.customer_window_obj = Customer(self.customer_window)
+        Customer(self.customer_window)
 
     def room_windows(self):
         self.room_window = Toplevel(self.root)
-        self.room_window_obj = Room(self.room_window)
+        Room(self.room_window)
 
     def room_manage(self):
         self.room_manage = Toplevel(self.root)
-        self.room_manage = RoomManage(self.room_manage)
+        RoomManage(self.room_manage)
     
     def logout(self):
-        self.root.destroy()       
+        self.root.destroy()     
 
     def __init__(self, root):
 

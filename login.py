@@ -3,15 +3,11 @@ from tkinter import ttk
 from tkinter import messagebox
 from db_connector import DBConnection
 import re
-
+from forgot_password import ForgotPass
 from home import Home
 class Login:
-    connection = DBConnection()
 
-    def home(self):
-        root = Tk()
-        Home(root)
-        return 
+    connection = DBConnection()
     
     def validate(self):
         error = False
@@ -24,6 +20,8 @@ class Login:
 
         elif self.password.get() == "":
             messagebox.showerror("Error","Password is empty")
+            
+           
 
         else: error = True
         return error
@@ -31,6 +29,7 @@ class Login:
 
     def check_details(self):
         if self.validate():
+            match = False
             try:
                 cursor = self.connection.db.cursor()
                 cursor.execute("select * from admin_details where email_id = %s and password= %s",(
@@ -42,14 +41,18 @@ class Login:
                 if len(rows) >0:
                     messagebox.showinfo("Success","you have successully logged in!.....")
                     self.root.destroy()
-                    self.home()
+                    home_screen = Tk()
+                    Home(home_screen)
+                     
+                   
                     
                 else:
-                    messagebox.showerror("Error","Login Failed")    
+                    messagebox.showerror("Error","Login Failed")
+                    match = True    
 
             except Exception as e:
                 messagebox.showerror("Error",e)    
-        return            
+        return match            
      
     def __init__(self,root):
         self.root = root
@@ -70,7 +73,7 @@ class Login:
         #Password entry
         password_lbl = ttk.Label(self.root,text="Password: ",font=(" new times roman",12,"bold"))
         password_lbl.place(x=100, y=170)
-        password_entry = ttk.Entry(self.root,textvariable=self.password,font=("new times roman",12,"bold"))
+        password_entry = ttk.Entry(self.root,textvariable=self.password,font=("new times roman",12,"bold"),show="*")
         password_entry.place(x=100,y=200)
 
         #forgot password
