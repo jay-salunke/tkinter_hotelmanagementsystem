@@ -4,7 +4,7 @@ from PIL import Image, ImageTk
 from customer import Customer
 from room import Room
 from room_manage import RoomManage
-
+from login import Login
 
 
 class Home:
@@ -21,6 +21,8 @@ class Home:
         RoomManage(self.room_manage)
     
     def logout(self):
+        login_screen = Tk()
+        Login(login_screen)
         self.root.destroy()     
 
     def __init__(self, root):
