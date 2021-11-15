@@ -8,6 +8,12 @@ from home import Home
 class Login:
 
     connection = DBConnection()
+
+    def switch_screen(*args):
+        root.destroy()
+        forgot_pass = Tk()
+        ForgotPass(forgot_pass)
+        return
     
     def validate(self):
         error = False
@@ -38,7 +44,7 @@ class Login:
                 ))
 
                 rows= cursor.fetchall()
-                if len(rows) >0:
+                if rows != None:
                     messagebox.showinfo("Success","you have successully logged in!.....")
                     self.root.destroy()
                     home_screen = Tk()
@@ -79,7 +85,7 @@ class Login:
         #forgot password
         forgot_password_lbl =Label(self.root,text="Forgot Password?",font=("new times roman",9,"bold"),fg="blue")
         forgot_password_lbl.place(x=100,y=235)
-
+        forgot_password_lbl.bind('<Button-1>',self.switch_screen)
         #login button
         login_btn = Button(self.root,text="LOGIN",font=("new times roman",10,"bold"),padx=70,command=self.check_details)
         login_btn.place(x=100,y=270)
