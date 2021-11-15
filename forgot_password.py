@@ -65,7 +65,7 @@ class ForgotPass:
         #current password entry
         current_pass_lbl = Label(self.root,font=("new times roman",12,"bold"),text="Current password: ")
         current_pass_lbl.place(x=100,y=100)
-        current_pass_entry = Entry(self.root,font=("new times roman",12,"bold"),textvariable=self.current_pass)
+        current_pass_entry = Entry(self.root,font=("new times roman",12,"bold"),textvariable=self.current_pass,show="*")
         current_pass_entry.place(x=100,y=130)
         
         #new password entry
