@@ -3,8 +3,9 @@ from tkinter import ttk
 from tkinter import messagebox
 from db_connector import DBConnection
 import re
-from forgot_password import ForgotPass
-from home import Home
+from forgot_password import *
+from home import *
+
 class Login:
 
     connection = DBConnection()
