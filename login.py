@@ -90,7 +90,7 @@ class Login:
         login_btn = Button(self.root,text="LOGIN",font=("new times roman",10,"bold"),padx=70,command=self.check_details)
         login_btn.place(x=100,y=270)
 
-
-root = Tk()
-Login(root)
-root.mainloop()
+if __name__ == '__main__':
+    root = Tk()
+    Login(root)
+    root.mainloop()
