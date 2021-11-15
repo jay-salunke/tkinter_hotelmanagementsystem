@@ -135,20 +135,22 @@ class RoomManage:
         
         return
     def delete_data(self):
-        try:
-            askyesno_msg_box = messagebox.askyesno("hotel management system","Do you really want to delete",parent =self.root)
-            if askyesno_msg_box>0:
-                cursor = self.db_con.db.cursor()
-                cursor.execute("delete from room_details where Room_no = %s",(
-                    self.Room_no.get(),
-                ))
-                self.db_con.db.commit()
-                self.engine.say("Data deleted successfully")
-                self.engine.runAndWait()
-                self.fetch_all_data()
-                messagebox.showerror("Error","Data deleted successfully")
-        except Exception as e:
-            messagebox.showwarning("Warning",e,parent = self.root)
+        if self.form_validation():
+            
+            try:
+                askyesno_msg_box = messagebox.askyesno("hotel management system","Do you really want to delete",parent =self.root)
+                if askyesno_msg_box>0:
+                    cursor = self.db_con.db.cursor()
+                    cursor.execute("delete from room_details where Room_no = %s",(
+                        self.Room_no.get(),
+                    ))
+                    self.db_con.db.commit()
+                    self.engine.say("Data deleted successfully")
+                    self.engine.runAndWait()
+                    self.fetch_all_data()
+                    messagebox.showerror("Error","Data deleted successfully")
+            except Exception as e:
+                messagebox.showwarning("Warning",e,parent = self.root)
         return    
 
     def clear_entry(self):
