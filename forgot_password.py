@@ -86,6 +86,7 @@ class ForgotPass:
         
         return
 
-root = Tk()
-ForgotPass(root)
-root.mainloop()
+if __name__ == "__main__":
+    root = Tk()
+    ForgotPass(root)
+    root.mainloop()
