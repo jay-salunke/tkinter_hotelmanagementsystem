@@ -1,16 +1,11 @@
 
-
-import re
 from tkinter import *
 from tkinter import ttk
 from PIL import Image, ImageTk
-from tkcalendar import DateEntry
 from tkinter import messagebox
 from db_connector import DBConnection
 import pyttsx3
-from time import strftime
-from datetime import datetime
-from datetime import date
+
 
 class RoomManage:
     db_con = DBConnection()
@@ -136,7 +131,7 @@ class RoomManage:
         return
     def delete_data(self):
         if self.form_validation():
-            
+
             try:
                 askyesno_msg_box = messagebox.askyesno("hotel management system","Do you really want to delete",parent =self.root)
                 if askyesno_msg_box>0:
