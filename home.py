@@ -21,9 +21,7 @@ class Home:
         RoomManage(self.room_manage)
     
     def logout(self):
-        self.root.destroy()  
-        
-           
+        self.root.destroy()     
 
     def __init__(self, root):
 
