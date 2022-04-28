@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header class="header d-flex justify-content-center align-items-center g-3 p-3 box-shadow">
+        <img src="img/bookStack.jpg" width="90px" alt="">
+        <h1 class="title">Library Management</h1>
+    </header>
+    <main class="d-flex dir-col justify-content-center align-items-center">
+        <h1 class="title text-center mt-3 mb-2 uppercase letter-space">Sign up</h1>
+        <div class="login-template mb-4">            
+            <form action="">
+                <div class="d-flex dir-col">
+                    <label for="fname" class="input-label">
+                        First Name:
+                    </label>
+                    <input type="text" name="first_name" id="fname" class="fb-100 input-style">
+                </div>
+                <div class="d-flex dir-col">
+                    <label for="lname" class="input-label">
+                        Last Name:
+                    </label>
+                    <input type="text" name="last_name" id="lname" class="fb-100 input-style">
+                </div>
+                <div class="d-flex dir-col">
+                    <label for="email_id" class="input-label">
+                        Email:
+                    </label>
+                    <input type="email" name="email_id" id="email_id" class="fb-100 input-style">
+                </div>
+                <div class="d-flex dir-col">
+                    <label for="number" class="input-label">
+                        Phone Number:
+                    </label>
+                    <input type="tel" name="mobile_no" id="number" class="fb-100 input-style">
+                </div>
+                <div class="d-flex dir-col">
+                    <label for="pword" class="input-label">
+                        Password:
+                    </label>
+                    <input type="password" name="password" id="password" class="fb-100 input-style">
+                </div>         
+                <button type="submit" id="signup-submit" class="large btn btn-semi-dark px-2 mi-auto">Sign Up</button>
+            </form>
+        </div>
+    </main>
+    <script src="js/validateSignUp.js" type="module"></script>
+</body>
+</html>

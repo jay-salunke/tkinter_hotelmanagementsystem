@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header class="header d-flex justify-content-center align-items-center g-3 p-3 box-shadow">
+        <img src="img/bookStack.jpg" width="90px" alt="">
+        <h1 class="title">Library Management</h1>
+    </header>
+    <main class="d-flex dir-col justify-content-center align-items-center">
+        <h1 class="title text-center mt-3 mb-2 uppercase letter-space">Login</h1>
+        <div class="login-template">            
+            <form action="./jsp/login.jsp" method = "post">
+                <div class="d-flex dir-col">
+                    <label for="email" class="input-label">
+                        Email:
+                    </label>
+                    <input type="email" name="email" id="email" class="fb-100 input-style">
+                </div>
+                <div class="d-flex dir-col">
+                    <label for="pword" class="input-label">
+                        Password:
+                    </label>
+                    <input type="password" name="password" id="pword" class="fb-100 input-style">
+                </div>
+                <div class="d-flex justify-content-around">
+                    <div class="d-flex align-items-center">
+                        <label for="admin" class="input-label">
+                            Admin
+                        </label>
+                        <input type="radio" id="admin" name="desig" value ="admin" class="fb-40 radio-style">
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <label for="user" class="input-label">
+                            User
+                        </label>
+                        <input type="radio" id="user" name="desig" value = "" class="fb-40 radio-style">
+                    </div>
+                </div>          
+                <button type="submit" id="login-submit" class="large btn btn-semi-dark px-2 mi-auto">Login</button>
+                <div class="d-flex justify-content-center">
+                    <a href="signup.html" class="medium btn-blank px-2 mi-auto">Sign Up</a>
+                </div>
+            </form>
+        </div>
+    </main>
+    <script src="js/validateLogin.js" type="module"></script>
+</body>
+</html>
